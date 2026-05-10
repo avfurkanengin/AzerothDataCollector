@@ -13,8 +13,10 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function addRow(env, id, name, value, extra)
 		local r = { id = id, name = name, value = tostring(value) }
-		if extra then
-			for k, v in pairs(extra) do r[k] = v end
+		if extra and type(extra) == "table" then
+			for k, v in pairs(extra) do
+				r[k] = v
+			end
 		end
 		env.records[#env.records + 1] = r
 	end
@@ -54,9 +56,9 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 			}
 			for i, rt in ipairs(types) do
 				local ok, acts = pcall(function() return C_WeeklyRewards.GetActivities(rt) end)
-				if ok and acts then
+				if ok and type(acts) == "table" then
 					for _, act in pairs(acts) do
-						if act.index == 3 then
+						if type(act) == "table" and act.index == 3 then
 							addRow(env, "weekly_" .. tostring(i), rf[i] or ("RewardType" .. i), act.progress or 0, { reward_type_index = i })
 						end
 					end
@@ -111,16 +113,25 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 				end
 			end
 
-			local hist = C_MythicPlus.GetRunHistory(false, true)
-			if hist then
-				for idx, runInfo in pairs(hist) do
+			local okHist, hist = pcall(function()
+				return C_MythicPlus.GetRunHistory(false, true)
+			end)
+			if okHist and type(hist) == "table" then
+				local function appendRun(runInfo, suffix)
+					if type(runInfo) ~= "table" then
+						return
+					end
 					env.records[#env.records + 1] = {
-						id = "run_" .. tostring(idx),
+						id = "run_" .. tostring(suffix),
 						name = "MythicPlusRecentRun",
 						map_challenge_mode_id = runInfo.mapChallengeModeID,
 						level = runInfo.level,
 						completed = runInfo.completed,
 					}
+				end
+				local iter = hist[1] ~= nil and ipairs or pairs
+				for idx, runInfo in iter(hist) do
+					appendRun(runInfo, idx)
 				end
 			end
 		end

@@ -110,7 +110,11 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 						if appearance.isCollected == false then
 						else
 							local sources = select(2, pcall(function()
-								return C_TransmogCollection.GetAppearanceSources(visualID)
+								local fn = C_TransmogCollection.GetAppearanceSources
+								if type(fn) ~= "function" then
+									return nil
+								end
+								return fn(visualID)
 							end))
 							if type(sources) ~= "table" then
 							else
@@ -155,18 +159,26 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		if not okSets or type(sets) ~= "table" then
 			return rec
 		end
+		local isCollectedFn = C_TransmogSets.IsSetCollected
 		for _, info in ipairs(sets) do
-			local collected = C_TransmogSets.IsSetCollected(info.setID)
-			local hid = info.hiddenUnlessCollected or false
-			if (not hid) or collected then
-				rec[#rec + 1] = {
-					id = info.setID,
-					name = info.name or "?",
-					collected = collected or false,
-					ui_order = info.uiOrder,
-					label = info.label,
-					class_mask = info.classMask,
-				}
+			if type(info) ~= "table" or not info.setID then
+			else
+				local collected = false
+				if type(isCollectedFn) == "function" then
+					local okC, c = pcall(isCollectedFn, info.setID)
+					collected = okC and c and true or false
+				end
+				local hid = info.hiddenUnlessCollected or false
+				if (not hid) or collected then
+					rec[#rec + 1] = {
+						id = info.setID,
+						name = info.name or "?",
+						collected = collected or false,
+						ui_order = info.uiOrder,
+						label = info.label,
+						class_mask = info.classMask,
+					}
+				end
 			end
 		end
 		return rec
