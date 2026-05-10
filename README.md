@@ -1,6 +1,6 @@
 # Azeroth Data Collector
 
-**18 ayrı WoW eklentisi** — `Interface/AddOns/` altında yan yana klasörler. Ana paket klasörü **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
+**20 ayrı WoW eklentisi** (`1` ana + `19` modül) — `Interface/AddOns/` altında yan yana klasörler. Ana paket **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
 
 - **Ana addon** [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc): `## SavedVariables: AzerothDataCollectorDB` → yalnızca **schema sürümü + client meta** (`WTF/.../SavedVariables/AzerothDataCollector.lua`).
 - **Her modül** kendi klasörüne paralel **`## SavedVariables: ...DB`** bildirir; Blizzard her biri için ayrı dosya yazar (ör. `AzerothDataCollector_Quests.lua`, `AzerothDataCollector_Currencies.lua`, …). DataStore’daki gibi **birden çok SV dosyası**.
@@ -17,7 +17,6 @@ AzerothDataCollector/                 ← Ana: Core/ + AzerothDataCollector.toc 
 AzerothDataCollector_Achievements/
 AzerothDataCollector_Agenda/
 AzerothDataCollector_Auctions/
-AzerothDataCollector_Collections/
 AzerothDataCollector_Containers/
 AzerothDataCollector_Currencies/
 AzerothDataCollector_Delves/
@@ -25,12 +24,15 @@ AzerothDataCollector_Equipment/
 AzerothDataCollector_Garrison/
 AzerothDataCollector_Mail/
 AzerothDataCollector_Meta/
+AzerothDataCollector_Mounts/
+AzerothDataCollector_Pets/
 AzerothDataCollector_Professions/
 AzerothDataCollector_Quests/
 AzerothDataCollector_Reputations/
 AzerothDataCollector_Spells/
 AzerothDataCollector_Stats/
 AzerothDataCollector_Talents/
+AzerothDataCollector_Transmog/
 ```
 
 **Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır. Tüm TOC’lerde **`## Group: AzerothDataCollector`** (ana klasör adıyla tutarlı — istemci gruplaşması / alt satır girintisi için) ve wiki’ye uygun ortak **`## Category: Other`** kullanılıyor; kategori için bkz. [Addon Categories](https://warcraft.wiki.gg/wiki/Addon_Categories). TOC değişince liste bazen **`/reload` veya tam çıkış** sonrası oturuyor.
@@ -44,9 +46,14 @@ Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/Sa
 | `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
 | `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök alanlar + **`by_character[guid].meta`** (temel kimlik: isim/realm/GUID/seviye, sınıf/ırk, taraf; bölge/alt-bölge; ilvl özeti; aktif uzmanlık; sunucu saati damgası; `RequestTimePlayed` ile gelen **`time_played_total_sec` / `time_played_level_sec`**) ve **`wallet`** (**`copper`** = `GetMoney()`, `partial` / `partial_reason` şimdilik tam tarama için sıfır) |
 | `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aynı kök + `by_character[guid].quests` (envelope) |
-| … | Diğer modüller aynı kalıp (`...DB`, `by_character[guid].<section>`) |
+| `AzerothDataCollector_Mounts.lua` | `AzerothDataCollector_MountsDB` → `by_character[guid].collections_mounts` |
+| `AzerothDataCollector_Pets.lua` | `AzerothDataCollector_PetsDB` → `by_character[guid].collections_pets` |
+| `AzerothDataCollector_Transmog.lua` | `AzerothDataCollector_TransmogDB` → `collections_transmog` (öz `record_kind`; kategori özeti + `appearance_collected` satırları) + `collections_transmog_sets` |
+| … | Diğer modüller aynı kalıp |
 
-**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları, modül yüklendiğinde `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). Harici araçlar sadece `by_character` okumalı; `schema_version` modül kökünde **2**.
+**Mounts / pets / xmog ayırımı:** Eski **`AzerothDataCollector_Collections*`** klasörünü ve `AzerothDataCollector_Collections.lua` SV dosyasını kaldırıp yerine üç modül kullan (**Mount/Pets/Transmog**). Eski koleksiyon SV’si oyunda silinebilir; yeni üçlüyü AddOns’ta işaretle.
+
+**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). `schema_version` ana DB’de ve modül varsayılanında **3** (başarı satır biçimi + koleksiyon bölümü güncellendiği için).
 
 **Diske yazma:** Oturum içi bellekte güncellenir; Blizzard dosyayı tipik olarak **`/reload` veya tam çıkış** sonrası yazar (DataStore ile aynı). Slash zorunlu değil.
 

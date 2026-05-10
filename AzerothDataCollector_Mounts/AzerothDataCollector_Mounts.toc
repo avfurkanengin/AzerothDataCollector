@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Azeroth Data Collector — Mounts
+## Category: Other
+## Group: AzerothDataCollector
+## IconTexture: Interface\Icons\garrison_building_storehouse
+## Notes: SavedVariables — toplanan mount listesi (DataStore-paralel ayrı lua).
+## Author: avfurkanengin
+## Version: 1.0.0
+## SavedVariables: AzerothDataCollector_MountsDB
+## Dependencies: AzerothDataCollector
+
+AzerothDataCollector_Mounts.lua

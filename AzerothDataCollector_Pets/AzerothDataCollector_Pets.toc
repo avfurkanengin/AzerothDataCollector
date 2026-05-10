@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Azeroth Data Collector — Pets (battle pets)
+## Category: Other
+## Group: AzerothDataCollector
+## IconTexture: Interface\Icons\garrison_building_storehouse
+## Notes: SavedVariables — sahip olunan combat pet koleksiyonu.
+## Author: avfurkanengin
+## Version: 1.0.0
+## SavedVariables: AzerothDataCollector_PetsDB
+## Dependencies: AzerothDataCollector
+
+AzerothDataCollector_Pets.lua

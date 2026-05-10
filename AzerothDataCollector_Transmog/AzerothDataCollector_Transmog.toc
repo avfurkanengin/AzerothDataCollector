@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Azeroth Data Collector — Transmog
+## Category: Other
+## Group: AzerothDataCollector
+## IconTexture: Interface\Icons\garrison_building_storehouse
+## Notes: Wardrobe koleksiyonu (appearance + set); ayrı SV dosyası.
+## Author: avfurkanengin
+## Version: 1.0.0
+## SavedVariables: AzerothDataCollector_TransmogDB
+## Dependencies: AzerothDataCollector
+
+AzerothDataCollector_Transmog.lua

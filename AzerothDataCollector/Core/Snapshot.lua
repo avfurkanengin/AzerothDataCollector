@@ -20,9 +20,11 @@ AC.MODULE_SV_CONFIG = {
 	["AzerothDataCollector_Talents"] = { sv_global = "AzerothDataCollector_TalentsDB", sections = { "talents" } },
 	["AzerothDataCollector_Stats"] = { sv_global = "AzerothDataCollector_StatsDB", sections = { "stats" } },
 	["AzerothDataCollector_Equipment"] = { sv_global = "AzerothDataCollector_EquipmentDB", sections = { "equipment" } },
-	["AzerothDataCollector_Collections"] = {
-		sv_global = "AzerothDataCollector_CollectionsDB",
-		sections = { "collections_mounts", "collections_pets", "collections_transmog", "collections_transmog_sets" },
+	["AzerothDataCollector_Mounts"] = { sv_global = "AzerothDataCollector_MountsDB", sections = { "collections_mounts" } },
+	["AzerothDataCollector_Pets"] = { sv_global = "AzerothDataCollector_PetsDB", sections = { "collections_pets" } },
+	["AzerothDataCollector_Transmog"] = {
+		sv_global = "AzerothDataCollector_TransmogDB",
+		sections = { "collections_transmog", "collections_transmog_sets" },
 	},
 	["AzerothDataCollector_Containers"] = { sv_global = "AzerothDataCollector_ContainersDB", sections = { "containers" } },
 	["AzerothDataCollector_Quests"] = { sv_global = "AzerothDataCollector_QuestsDB", sections = { "quests" } },
