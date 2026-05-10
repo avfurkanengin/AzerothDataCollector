@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Stats: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Stats — SV: AzerothDataCollector_StatsDB
+	Kök + by_character[guid].stats = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function addRow(env, id, name, value, extra)
 		local r = { id = id, name = name, value = tostring(value) }
 		if extra then

@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Achievements: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Achievements — SV: AzerothDataCollector_AchievementsDB
+	Kök + by_character[guid].achievements = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.achievements()
 		local env = AC.NewEnvelope(false, nil)
 

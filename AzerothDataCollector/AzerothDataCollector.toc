@@ -1,8 +1,9 @@
 ## Interface: 120000
 ## Title: Azeroth Data Collector (Main)
 ## Category: Azeroth Data Collector
+## Group: Azeroth Data Collector
 ## IconTexture: Interface\Icons\garrison_building_storehouse
-## Notes: Ana paket — SavedVariables (AzerothDataCollectorDB). Diğer “AzerothDataCollector_*” modülleri ayrı klasörler; hepsini AddOns köküne koy (aynı seviye).
+## Notes: Ana paket — SavedVariables içinde schema + client meta. Karakter blokları modüllerin kendi SV dosyalarında (DataStore modeli).
 ## Author: avfurkanengin
 ## Version: 1.0.0
 ## SavedVariables: AzerothDataCollectorDB

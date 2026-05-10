@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Garrison: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Garrison — SV: AzerothDataCollector_GarrisonDB
+	Kök + by_character[guid].garrison = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.garrison()
 		local env = AC.NewEnvelope(true, "garrison_legacy_maybe_empty")
 

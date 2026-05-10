@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Equipment: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Equipment — SV: AzerothDataCollector_EquipmentDB
+	Kök + by_character[guid].equipment = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local NUM_SLOTS = 30
 
 	local function itemRow(slot)

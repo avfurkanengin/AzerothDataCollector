@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Mail: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Mail — SV: AzerothDataCollector_MailDB
+	Kök + by_character[guid].mail = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function inboxOpen()
 		return MailboxFrame and MailboxFrame:IsShown()
 	end

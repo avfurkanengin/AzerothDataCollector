@@ -6,6 +6,7 @@
 ## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector (Dependencies).
 ## Author: avfurkanengin
 ## Version: 1.0.0
+## SavedVariables: AzerothDataCollector_AuctionsDB
 ## Dependencies: AzerothDataCollector
 
 AzerothDataCollector_Auctions.lua

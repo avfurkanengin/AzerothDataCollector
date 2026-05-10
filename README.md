@@ -2,7 +2,11 @@
 
 **18 ayrı WoW eklentisi** — `Interface/AddOns/` altında yan yana klasörler. Ana paket klasörü **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
 
-Veri tek **SavedVariables** global’ında (`AzerothDataCollectorDB`); tanım yalnızca ana [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc) içinde. Paylaşılan API: **`_G.AzerothDataCollector`** (`local AC = AzerothDataCollector`).
+- **Ana addon** [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc): `## SavedVariables: AzerothDataCollectorDB` → yalnızca **schema sürümü + client meta** (`WTF/.../SavedVariables/AzerothDataCollector.lua`).
+- **Her modül** kendi klasörüne paralel **`## SavedVariables: ...DB`** bildirir; Blizzard her biri için ayrı dosya yazar (ör. `AzerothDataCollector_Quests.lua`, `AzerothDataCollector_Currencies.lua`, …). DataStore’daki gibi **birden çok SV dosyası**.
+
+Paylaşılan API: **`_G.AzerothDataCollector`** (`local AC = AzerothDataCollector`).
+
 
 Repo: [github.com/avfurkanengin/AzerothDataCollector](https://github.com/avfurkanengin/AzerothDataCollector)
 
@@ -29,19 +33,26 @@ AzerothDataCollector_Stats/
 AzerothDataCollector_Talents/
 ```
 
-**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır.
+**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır. Ana ve modül `.toc` dosyalarında **`## Group` / `## Category` aynı metin** olmalı; ana pakette group eksik olursa bazı client sürümlerinde liste “ana ayrı, modüller ayrı” düz görünür.
 
 ## Kayıtlı değişkenler (SavedVariables)
 
-Hesap düzeyi (örnek):
+Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/`
 
-`World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/AzerothDataCollector.lua`
+| Dosya (örnek) | İçerik özeti |
+|---------------|----------------|
+| `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
+| `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök: `schema_version`, `module_key`, `addon_folder`, `last_saved_at`; `by_character[guid].meta` / `wallet` |
+| `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aynı kök + `by_character[guid].quests` (envelope) |
+| … | Diğer modüller aynı kalıp (`...DB`, `by_character[guid].<section>`) |
 
-**Normal kullanım:** Slash veya `/run` gerekmez. Oturum açınca (`PLAYER_LOGIN` ve dünya yüklemesi sonrası) eklenti arka planda taramayı dener; **`AzerothDataCollectorDB` diske yazılır** Blizzard’ın kuralına göre: karakter seçip dünyadayken yüklemeden sonra **`/reload` veya tam çıkış`** ile dosyanın oluşması/güncellenmesi beklenir (DataStore ile aynı model).
+**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları, modül yüklendiğinde `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). Harici araçlar sadece `by_character` okumalı; `schema_version` modül kökünde **2**.
 
-İsteğe bağlı olarak herhangi bir zamanda güncelleme için aşağıdaki slash komutları kullanılabilir.
+**Diske yazma:** Oturum içi bellekte güncellenir; Blizzard dosyayı tipik olarak **`/reload` veya tam çıkış** sonrası yazar (DataStore ile aynı). Slash zorunlu değil.
 
-**Güncelleme:** Daha önce ana klasör **`AzerothDataCollector_Main`** kullandıysan: eski klasörü AddOns’tan kaldırıp yeni **`AzerothDataCollector`** klasörünü koy. Eski **`AzerothDataCollector_Main.lua`** dosyasını **`AzerothDataCollector.lua`** olarak yeniden adlandır veya içindeki **`AzerothDataCollectorDB = { ... }`** bloğunu yeni dosyaya taşı (global adı değişmez).
+**Eski tek dosya dönemi:** Daha önce tüm veri tek `AzerothDataCollectorDB.characters` altındaysa, yeni yapıda veri **modül dosyalarına bölünür**; eski SV’yi otomatik bölmüyoruz — **yeni build’i kopyalayıp `/reload` ile taramayı yeniden çalıştır** (veya veriyi elle taşı). Ana dosyada sadece meta kaldıysa `AzerothDataCollectorDB`’yi silebilir veya sadece `schema_version` / `client` bırakabilirsin.
+
+**Güncelleme:** `AzerothDataCollector_Main` → `AzerothDataCollector` taşıması için eski notlar geçerli; SV adı `AzerothDataCollector.lua` olmalı.
 
 ## Komutlar (isteğe bağlı, manuel yenileme)
 

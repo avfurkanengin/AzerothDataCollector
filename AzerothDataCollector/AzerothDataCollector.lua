@@ -1,6 +1,6 @@
 --[[
   AzerothDataCollector — entry .lua (addon klasör / .toc ile aynı taban ad).
-  SavedVariables: AzerothDataCollectorDB
+  SavedVariables: AzerothDataCollectorDB — sadece schema_version + client; karakter verisi modül dosyalarında by_character ile.
 ]]
 
 local ADDON_NAME, AC = ...

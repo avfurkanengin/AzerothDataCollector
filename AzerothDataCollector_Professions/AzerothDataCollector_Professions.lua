@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Professions: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Professions — SV: AzerothDataCollector_ProfessionsDB
+	Kök + by_character[guid].professions = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function safeRecipeDump(skillLineID, env)
 		if not skillLineID then return end
 		local ok, isRecipeLine = pcall(function()

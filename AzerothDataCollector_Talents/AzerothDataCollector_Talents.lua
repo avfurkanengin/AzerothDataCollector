@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Talents: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Talents — SV: AzerothDataCollector_TalentsDB
+	Kök + by_character[guid].talents = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function scanClassicTalentGrid()
 		local records = {}
 		local maxTier = GetMaxTalentTier and GetMaxTalentTier() or 0

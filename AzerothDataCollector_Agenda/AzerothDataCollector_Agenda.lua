@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Agenda: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Agenda — SV: AzerothDataCollector_AgendaDB
+	Kök + by_character[guid].agenda = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.agenda()
 		local env = AC.NewEnvelope(false, nil)
 

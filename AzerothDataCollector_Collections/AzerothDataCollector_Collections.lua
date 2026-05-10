@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Collections: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Collections — SV: AzerothDataCollector_CollectionsDB
+	Kök + tek dosyada birden fazla anahtar: by_character[guid].collections_mounts / _pets / _transmog / _transmog_sets
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function scanMounts()
 		local rec = {}
 		local ok, ids = pcall(function()

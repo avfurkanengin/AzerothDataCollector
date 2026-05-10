@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Containers: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Containers — SV: AzerothDataCollector_ContainersDB
+	Kök + by_character[guid].containers = envelope | eski characters → by_character otomatik.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	AC._bankOpened = AC._bankOpened or false
 
 	local function slotRecord(container_kind, bag_id, slot, link)

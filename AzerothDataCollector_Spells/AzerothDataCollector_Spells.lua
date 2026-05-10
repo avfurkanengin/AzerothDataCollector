@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Spells: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Spells — SV: AzerothDataCollector_SpellsDB
+	Kök + by_character[guid].spells = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.spells()
 		local env = AC.NewEnvelope(false, nil)
 

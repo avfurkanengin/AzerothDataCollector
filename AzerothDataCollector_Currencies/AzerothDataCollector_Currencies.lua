@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Currencies: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Currencies — SV: AzerothDataCollector_CurrenciesDB
+	Kök + by_character[guid].currencies = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local headersState = {}
 	local headerCounter = 0
 

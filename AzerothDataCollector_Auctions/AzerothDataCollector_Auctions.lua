@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Auctions: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Auctions — SV: AzerothDataCollector_AuctionsDB
+	Kök + by_character[guid].auctions = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.auctions()
 		local env = AC.NewEnvelope(true, "auction_house_not_recently_loaded")
 

@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Reputations: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Reputations — SV: AzerothDataCollector_ReputationsDB
+	Kök + by_character[guid].reputations = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local headerState = {}
 
 	local function SaveHeadersRetail()

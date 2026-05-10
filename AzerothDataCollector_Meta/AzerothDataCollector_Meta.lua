@@ -1,4 +1,8 @@
---[[ AzerothDataCollector_Meta: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Meta — kendi SavedVariables: AzerothDataCollector_MetaDB
+	Kök alanlar: schema_version, module_key, addon_folder, last_saved_at,
+	by_character[guid] = { meta = {...}, wallet = {...} } (dosyada self-documenting; eski characters → otomatik by_character).
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +11,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function zoneText()
 		local sub = GetRealZoneText() or ""
 		local mini = GetMinimapZoneText() or ""

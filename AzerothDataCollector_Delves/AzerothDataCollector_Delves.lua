@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Delves: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Delves — SV: AzerothDataCollector_DelvesDB
+	Kök + by_character[guid].delves = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	function AC.Scanners.delves()
 		local env = AC.NewEnvelope(true, "delve_api_optional_per_patch")
 

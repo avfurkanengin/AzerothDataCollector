@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Quests: bağımsız addon (kendi .toc + bu .lua) ]] 
+--[[
+	AzerothDataCollector_Quests — SV: AzerothDataCollector_QuestsDB
+	Kök + by_character[guid].quests = envelope | eski characters → by_character.
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -7,6 +10,7 @@ if type(AC) ~= "table" then
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
+	AC.EnsureModuleSavedVariables(ADDON_NAME)
 	local function push(env, row)
 		env.records[#env.records + 1] = row
 	end

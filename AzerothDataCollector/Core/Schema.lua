@@ -5,7 +5,7 @@
 
 local ADDON_NAME, AC = ...
 
-AC.SCHEMA_VERSION = 1
+AC.SCHEMA_VERSION = 2
 
 -- Envelope-backed sections only (meta + wallet are plain tables; not in this list)
 AC.SECTION_NAMES = {
