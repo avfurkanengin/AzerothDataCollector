@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Azeroth Data Collector (Main)
+## Notes: Ana paket — SavedVariables (AzerothDataCollectorDB). Diğer “AzerothDataCollector_*” modülleri ayrı klasörler; hepsini AddOns köküne koy (aynı seviye).
+## Author: avfurkanengin
+## Version: 1.0.0
+## SavedVariables: AzerothDataCollectorDB
+
+Core/Schema.lua
+Core/Snapshot.lua
+Core/Debouncer.lua
+Core/Events.lua
+AzerothDataCollector_Main.lua

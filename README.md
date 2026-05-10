@@ -1,35 +1,52 @@
 # Azeroth Data Collector
 
-Retail **World of Warcraft** addon that writes **AI-friendly, snake_case** character snapshots to **`SavedVariables`** (`AzerothDataCollectorDB`).
+**18 ayrı WoW eklentisi** — hepsi `Interface/AddOns/` altında **aynı seviyede** klasör: `AzerothDataCollector_<Ad>/` (ana paket de **`AzerothDataCollector_Main`**). Her birinin kendi **`.toc`** ve kendi **tek giriş `.lua`** dosyası vardır; ortak `Modules/` kabı yok.
 
-Repository: [github.com/avfurkanengin/AzerothDataCollector](https://github.com/avfurkanengin/AzerothDataCollector)
+Veri tek bir **SavedVariables** global’ına (`AzerothDataCollectorDB`) yazılır; bu değişken **yalnızca `AzerothDataCollector_Main`** `.toc` dosyasında tanımlıdır. Lua tarafında paylaşılan API hâlâ **`_G.AzerothDataCollector`** (modüller `local AC = AzerothDataCollector` kullanır).
 
-## Install
+Repo: [github.com/avfurkanengin/AzerothDataCollector](https://github.com/avfurkanengin/AzerothDataCollector)
 
-1. Copy the folder **`AzerothDataCollector`** into:
-   - `_retail_/Interface/AddOns/AzerothDataCollector/`
-2. Ensure `AzerothDataCollector.toc` lives next to `Main.lua`.
-3. Enable **Azeroth Data Collector** in the AddOns list.
+## Klasör yapısı (AddOns kökünde yan yana)
 
-## Slash commands
+```
+AzerothDataCollector_Achievements/
+AzerothDataCollector_Agenda/
+AzerothDataCollector_Auctions/
+AzerothDataCollector_Collections/
+AzerothDataCollector_Containers/
+AzerothDataCollector_Currencies/
+AzerothDataCollector_Delves/
+AzerothDataCollector_Equipment/
+AzerothDataCollector_Garrison/
+AzerothDataCollector_Mail/
+AzerothDataCollector_Main/          ← Core/ + AzerothDataCollector_Main.toc + AzerothDataCollector_Main.lua (+ SavedVariables)
+AzerothDataCollector_Meta/
+AzerothDataCollector_Professions/
+AzerothDataCollector_Quests/
+AzerothDataCollector_Reputations/
+AzerothDataCollector_Spells/
+AzerothDataCollector_Stats/
+AzerothDataCollector_Talents/
+```
 
-- `/adc` or `/azerothdata` — run a full snapshot
-- `/acc` — same (legacy alias)
+Oyunda **`_retail_/Interface/AddOns/`** altına istediğin modül klasörlerini kopyala; **mutlaka `AzerothDataCollector_Main`** da olsun. Her modül `.toc` içinde **`Dependencies: AzerothDataCollector_Main`** ile ana klasöre bağlıdır.
 
-## Repo layout
+Etkinleştirdiğin her modül, **`AzerothDataCollector` global’ında** ilgili tarayıcıyı (`AC.Scanners[...]`) kaydeder.
 
-| Path | Purpose |
-|------|---------|
-| `AzerothDataCollector/` | Main WoW addon (the one you install) |
-| `SubAddons/` | Placeholder for future optional companion addons (empty for now) |
-| `SampleAddon/` | **Not in git** — local DataStore reference only (see `.gitignore`) |
+Kayıtlı değişken dosyası (hesap düzeyi, örnek):
 
-## Data file
+`World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/AzerothDataCollector_Main.lua`
 
-After `/reload` or logout, the client writes:
+Eski sürümde ana klasör adı **`AzerothDataCollector`** idi ve SV dosyası çoğu kurulumda **`AzerothDataCollector.lua`** olurdu. Taşıdıysan içindeki **`AzerothDataCollectorDB = { ... }`** tablosunu yeni ada uygun dosyaya kopyalayabilir veya dosyayı doğrudan yeniden adlandırabilirsin (değişken adı `AzerothDataCollectorDB` olarak kalmalı).
 
-`WTF/Account/<account>/SavedVariables/AzerothDataCollector.lua`
+## Komutlar
 
-## Requirements
+`/adc`, `/azerothdata`, `/acc` (tanım `AzerothDataCollector_Main/AzerothDataCollector_Main.lua` içinde)
 
-- **Retail / mainline** only (`WOW_PROJECT_MAINLINE`)
+## Git
+
+`SampleAddon/` yerel referanstır; repoda yok (`.gitignore`).
+
+## Gereksinim
+
+Retail / mainline (`WOW_PROJECT_MAINLINE`).

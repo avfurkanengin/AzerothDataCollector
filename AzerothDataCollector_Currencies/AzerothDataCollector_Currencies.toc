@@ -1,0 +1,8 @@
+## Interface: 120000
+## Title: Azeroth Data Collector — Currencies
+## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector_Main (Dependencies).
+## Author: avfurkanengin
+## Version: 1.0.0
+## Dependencies: AzerothDataCollector_Main
+
+AzerothDataCollector_Currencies.lua
