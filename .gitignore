@@ -1,0 +1,13 @@
+# Local reference copies (Blizzard / DataStore samples) — do not publish
+SampleAddon/
+
+# OS / tooling
+.DS_Store
+Thumbs.db
+*.bak
+.idea/
+.vscode/
+.cursor/
+
+# Lua bytecode (if ever used)
+*.luac
