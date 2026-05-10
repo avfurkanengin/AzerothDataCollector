@@ -1,6 +1,6 @@
 --[[
 	AzerothDataCollector_Talents — SV: AzerothDataCollector_TalentsDB
-	Kök + by_character[guid].talents = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].talents envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -118,16 +118,17 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		AC.CommitSection("talents", env)
 	end
 
+	local T_DEB = 0.55
+	local T_KEY = "adc_talents"
+	local function debouncedTalents()
+		local fn = AC.Scanners.talents
+		if fn then AC.Debounce(T_KEY, T_DEB, fn) end
+	end
+
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.talents then AC.Scanners.talents() end
 	end)
-	AC.RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", function()
-		if AC.Scanners.talents then AC.Scanners.talents() end
-	end)
-	AC.RegisterEvent("PLAYER_TALENT_UPDATE", function()
-		if AC.Scanners.talents then AC.Scanners.talents() end
-	end)
-	AC.RegisterEvent("TRAIT_TREE_CURRENCY_INFO_UPDATED", function()
-		if AC.Scanners.talents then AC.Scanners.talents() end
-	end)
+	AC.RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", debouncedTalents)
+	AC.RegisterEvent("PLAYER_TALENT_UPDATE", debouncedTalents)
+	AC.RegisterEvent("TRAIT_TREE_CURRENCY_INFO_UPDATED", debouncedTalents)
 end)

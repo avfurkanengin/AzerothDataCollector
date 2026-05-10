@@ -1,19 +1,32 @@
 # Azeroth Data Collector
 
-**21 ayrı WoW eklentisi** (`1` ana + `20` modül) — `Interface/AddOns/` altında yan yana klasörler. Ana paket **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
+This repository is the **in-game collection layer** for a future **World of Warcraft AI companion** product. It runs inside the WoW **mainline** (“Retail”) **game client** and uses Blizzard’s permitted **in-game Addon / UI (Lua) APIs** — not Blizzard’s Battle.net HTTPS “developer” APIs — to read game state under normal addon rules (no automation, no protected actions, no outbound networking from our Lua code), then writes **persistent, structured snapshots** that are easy for **both humans and LLMs** to reason about.
 
-- **Ana addon** [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc): `## SavedVariables: AzerothDataCollectorDB` → yalnızca **schema sürümü + client meta** (`WTF/.../SavedVariables/AzerothDataCollector.lua`).
-- **Her modül** kendi klasörüne paralel **`## SavedVariables: ...DB`** bildirir; Blizzard her biri için ayrı dosya yazar (ör. `AzerothDataCollector_Quests.lua`, `AzerothDataCollector_Currencies.lua`, …). DataStore’daki gibi **birden çok SV dosyası**.
+**Design intent**
 
-Paylaşılan API: **`_G.AzerothDataCollector`** (`local AC = AzerothDataCollector`).
+1. **Personalized player state (“user data”)** — Characters are keyed by GUID under `by_character`. Each domain (quests, gear, reputations, …) uses a predictable **envelope** shape (`records`, `partial`, `updated_at`, semantic `record_kind` fields, stable IDs where possible).
+2. **Machine-readable WoW snapshots** — Output is Blizzard’s **`SavedVariables` Lua serialization** (`WTF/.../SavedVariables/*.lua`): plain tables/dictionaries LLM tooling can ingest, grep, parse, diff, or index without reverse-engineering bit-packed blobs.
+3. **Companion-ready split** — The addon intentionally **does not** call LLMs or fetch external knowledge. A separate **desktop app / companion** is expected to combine these dumps with **static or refreshed external WoW knowledge** (wikis, patch notes, guides, item DBs, community content, RAG corpora) for answers, coaching, and UI—so this project stays a **safe, read-only data foundation**.
 
+In short: **WoW Addon / Lua API → structured SavedVariables Lua files on disk** that can later sit next to your **knowledge pipeline** as the per-user half of an AI companion database.
+
+---
+
+## What this repo contains
+
+**21 separate WoW addons** (1 main package + **20 modules**) live as sibling folders under `Interface/AddOns/`. The main addon is **`AzerothDataCollector`**; satellites are **`AzerothDataCollector_<Domain>/`**. Each has its own `.toc` and single entry `.lua`.
+
+- **Main addon** [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc): `## SavedVariables: AzerothDataCollectorDB` stores **only schema version + client metadata** (`WTF/.../SavedVariables/AzerothDataCollector.lua`).
+- **Each module** declares its own **`## SavedVariables: ...DB`** global; Blizzard persists one SavedVariables Lua file per global (for example `AzerothDataCollector_Quests.lua`, `AzerothDataCollector_Currencies.lua`, …)—a **multi-file** snapshot layout keeps character-scale data out of the root DB.
+
+Shared API: **`_G.AzerothDataCollector`** (`local AC = AzerothDataCollector`).
 
 Repo: [github.com/avfurkanengin/AzerothDataCollector](https://github.com/avfurkanengin/AzerothDataCollector)
 
-## Klasör yapısı (AddOns kökünde)
+## Folder layout (Addons root)
 
 ```
-AzerothDataCollector/                 ← Ana: Core/ + AzerothDataCollector.toc + AzerothDataCollector.lua
+AzerothDataCollector/                 ← Main: Core/ + AzerothDataCollector.toc + AzerothDataCollector.lua
 AzerothDataCollector_Achievements/
 AzerothDataCollector_Agenda/
 AzerothDataCollector_Auctions/
@@ -36,45 +49,45 @@ AzerothDataCollector_Talents/
 AzerothDataCollector_Transmog/
 ```
 
-**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır. Tüm TOC’lerde **`## Group: AzerothDataCollector`** (ana klasör adıyla tutarlı — istemci gruplaşması / alt satır girintisi için) ve wiki’ye uygun ortak **`## Category: Other`** kullanılıyor; kategori için bkz. [Addon Categories](https://warcraft.wiki.gg/wiki/Addon_Categories). TOC değişince liste bazen **`/reload` veya tam çıkış** sonrası oturuyor.
+**Always enable** the `AzerothDataCollector/` main addon. Modules list **`## Dependencies: AzerothDataCollector`** in their `.toc` files. All TOCs share **`## Group: AzerothDataCollector`** and **`## Category: AzerothAiCompanion`** (custom group label in the in-game AddOns list; see [Addon Categories](https://warcraft.wiki.gg/wiki/Addon_Categories) for Blizzard’s built-in values). After editing TOCs you may need a **`/reload` or full client restart** before the launcher list settles.
 
-## Kayıtlı değişkenler (SavedVariables)
+## SavedVariables
 
-Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/`
+Typical account path: `World of Warcraft/_retail_/WTF/Account/<AccountName>/SavedVariables/`
 
-| Dosya (örnek) | İçerik özeti |
-|---------------|----------------|
+| File (example) | Contents (summary) |
+|----------------|---------------------|
 | `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
-| `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök alanlar + **`by_character[guid].meta`** (temel kimlik: isim/realm/GUID/seviye, sınıf/ırk, taraf; bölge/alt-bölge; ilvl özeti; aktif uzmanlık; sunucu saati damgası; `RequestTimePlayed` ile gelen **`time_played_total_sec` / `time_played_level_sec`**) ve **`wallet`** (**`copper`** = `GetMoney()`, `partial` / `partial_reason` şimdilik tam tarama için sıfır) |
-| `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aktif günlük (`record_kind=quest_log_active`, `objectives[]`); tamamlanan ID’ler `completed_quest_ids_chunk` satırları + `_quests_completed_meta` (50k üstü kesilir); DataStore’a yakın görünüm metni için hedef başına uzunluk tavanı var |
-| `AzerothDataCollector_Achievements.lua` | `AzerothDataCollector_AchievementsDB` — tamamlanan `achievement_completed`; her biri **`criteria[]`**; güvenlik tavanı (~40k) |
-| `AzerothDataCollector_Equipment.lua` | `AzerothDataCollector_EquipmentDB` — slot: `gems[]`, **`stats`**, **`temp_enchant_spell_id`** |
-| `AzerothDataCollector_GuildBank.lua` | `AzerothDataCollector_GuildBankDB` — `guild_bank`; pencere **kapalı** iken **`partial`** |
+| `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — root fields plus **`by_character[guid].meta`** (name/realm/GUID/level, class/race/faction; zone/subzone; item level summaries; specialization; server time string; **`time_played_total_sec`** / **`time_played_level_sec`** from `RequestTimePlayed`) and **`wallet`** (**`copper`** = `GetMoney()`, optional `partial` / `partial_reason`) |
+| `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — active log (`record_kind=quest_log_active`, `objectives[]`); completed IDs in `completed_quest_ids_chunk` rows + `_quests_completed_meta` (IDs above ~50k are truncated); objective description strings capped for readability/size |
+| `AzerothDataCollector_Achievements.lua` | `AzerothDataCollector_AchievementsDB` — completed `achievement_completed` rows with **`criteria[]`** each; overall safety cap (~40k achievements) |
+| `AzerothDataCollector_Equipment.lua` | `AzerothDataCollector_EquipmentDB` — per-slot: `gems[]`, **`stats`**, **`temp_enchant_spell_id`** |
+| `AzerothDataCollector_GuildBank.lua` | `AzerothDataCollector_GuildBankDB` — `guild_bank`; when the guild bank UI is closed the section stays **`partial`** |
 | `AzerothDataCollector_Mounts.lua` | `AzerothDataCollector_MountsDB` → `by_character[guid].collections_mounts` |
 | `AzerothDataCollector_Pets.lua` | `AzerothDataCollector_PetsDB` → `by_character[guid].collections_pets` |
-| `AzerothDataCollector_Transmog.lua` | `AzerothDataCollector_TransmogDB` → `collections_transmog` (öz `record_kind`; kategori özeti + `appearance_collected` satırları) + `collections_transmog_sets` |
-| … | Diğer modüller aynı kalıp |
+| `AzerothDataCollector_Transmog.lua` | `AzerothDataCollector_TransmogDB` → `collections_transmog` (custom `record_kind` rows: category rollup + `appearance_collected`) + `collections_transmog_sets` |
+| … | Remaining modules follow the same envelope + `records` convention |
 
-**Mounts / pets / xmog ayırımı:** Eski **`AzerothDataCollector_Collections*`** klasörünü ve `AzerothDataCollector_Collections.lua` SV dosyasını kaldırıp yerine üç modül kullan (**Mount/Pets/Transmog**). Eski koleksiyon SV’si oyunda silinebilir; yeni üçlüyü AddOns’ta işaretle.
+**Mounts / pets / xmog split:** Remove legacy **`AzerothDataCollector_Collections*`** folders and the shared `AzerothDataCollector_Collections.lua` SV if you migrated; enable the Mount, Pets, and Transmog modules instead. Older collection SV blobs can be deleted in-game once you trust the replacement exports.
 
-**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). `schema_version` ana DB ve modül varsayılanı **4** (quests/envelope biçimi, achievements+criteria, equipment genişlemesi, `guild_bank` bölümü).
+**Migration (`characters` → `by_character`):** `AC.EnsureModuleSavedVariables` rewires legacy `characters[...]` tables into **`by_character`** and removes the obsolete key on load. `schema_version` **4** (main DB + defaults) denotes the quests envelope format, achievement+criteria payloads, richer equipment snapshot, and the dedicated `guild_bank` section.
 
-**Diske yazma:** Oturum içi bellekte güncellenir; Blizzard dosyayı tipik olarak **`/reload` veya tam çıkış** sonrası yazar (DataStore ile aynı). Slash zorunlu değil.
+**Disk persistence:** Tables update instantly in Lua memory; Blizzard flushes SavedVariables **`/reload` or logout** in normal cases—you do not need a slash command for snapshots to accumulate in RAM.
 
-**Eski tek dosya dönemi:** Daha önce tüm veri tek `AzerothDataCollectorDB.characters` altındaysa, yeni yapıda veri **modül dosyalarına bölünür**; eski SV’yi otomatik bölmüyoruz — **yeni build’i kopyalayıp `/reload` ile taramayı yeniden çalıştır** (veya veriyi elle taşı). Ana dosyada sadece meta kaldıysa `AzerothDataCollectorDB`’yi silebilir veya sadece `schema_version` / `client` bırakabilirsin.
+**Single-file-era data:** Older builds that persisted everything inside `AzerothDataCollectorDB.characters` are **not automatically split**. Copy this build into `Interface/AddOns`, `/reload`, and let scanners repopulate (or migrate manually). If the root SV now only mirrors schema/client metadata you may trim `AzerothDataCollectorDB` accordingly.
 
-**Güncelleme:** `AzerothDataCollector_Main` → `AzerothDataCollector` taşıması için eski notlar geçerli; SV adı `AzerothDataCollector.lua` olmalı.
+**Rename note:** Migrating **`AzerothDataCollector_Main` → `AzerothDataCollector`** still applies for anyone on ancient paths; SV file name **`AzerothDataCollector.lua`** must match the new global.
 
-## Komutlar (isteğe bağlı, manuel yenileme)
+## Commands (optional manual refresh)
 
 - `/adc`, `/azerothdata`, `/azdatacollect`, `/azadc`, `/acc`
 
-Tanım: [`AzerothDataCollector/AzerothDataCollector.lua`](AzerothDataCollector/AzerothDataCollector.lua). Geliştirici teşhisinde chat’te `ADC_DEBUG = true` atanırsa otomatik taramadan sonra da onay mesajı basılır.
+Defined in [`AzerothDataCollector/AzerothDataCollector.lua`](AzerothDataCollector/AzerothDataCollector.lua). For debugging, assigning `_G.ADC_DEBUG = true` mirrors the slash chat confirmation after automated scans finish.
 
 ## Git
 
-`SampleAddon/` yerel referanstır; repoda yok (`.gitignore`).
+`SampleAddon/` is referenced locally for prototyping; it is **not** tracked (`.gitignore`).
 
-## Gereksinim
+## Requirements
 
-Retail / mainline (`WOW_PROJECT_MAINLINE`).
+World of Warcraft **mainline** client (often called **Retail**) — enforced in-game as **`WOW_PROJECT_MAINLINE`**. Classic / Era / other branches are unsupported.

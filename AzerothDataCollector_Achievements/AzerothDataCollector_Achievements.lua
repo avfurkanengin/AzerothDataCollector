@@ -1,7 +1,8 @@
 --[[
 	AzerothDataCollector_Achievements — SV: AzerothDataCollector_AchievementsDB
-	Tamamlanan başarılar: account_wide ile; her başarı için criteria[] (Datastore-benzeri ayrıntı).
-	Onaylanmamış başarılar atlanır (SV boyutu); meta satırında toplamlar ve api_notlari.
+	Completed achievements only (account-wide flag preserved); each row includes criteria[] detail.
+	Incomplete achievements are omitted to curb SavedVariables size; a leading `_achievement_totals` row summarizes caps and totals.
+	In session: ACHIEVEMENT_EARNED triggers a debounced full scan (event is rare enough to stay fairly fresh).
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -11,6 +12,8 @@ if type(AC) ~= "table" then
 end
 
 local SAFETY_CAP_ACHIEVEMENTS = 40000
+local EARNED_DEBOUNCE_SEC = 3
+local DEBOUNCE_KEY_EARNED = "adc_achievements_earned"
 
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
@@ -152,5 +155,11 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.achievements then AC.Scanners.achievements() end
+	end)
+	AC.RegisterEvent("ACHIEVEMENT_EARNED", function()
+		if not AC.Scanners.achievements then
+			return
+		end
+		AC.Debounce(DEBOUNCE_KEY_EARNED, EARNED_DEBOUNCE_SEC, AC.Scanners.achievements)
 	end)
 end)

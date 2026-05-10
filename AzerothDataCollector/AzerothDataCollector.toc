@@ -1,9 +1,9 @@
 ## Interface: 120000
 ## Title: Azeroth Data Collector (Main)
-## Category: Other
+## Category: AzerothAiCompanion
 ## Group: AzerothDataCollector
-## IconTexture: Interface\Icons\garrison_building_storehouse
-## Notes: Ana paket — SavedVariables içinde schema + client meta. Karakter blokları modüllerin kendi SV dosyalarında (DataStore modeli).
+## IconTexture: Interface\AddOns\AzerothDataCollector\Media\AzerothAiCompanion
+## Notes: Main addon — root SavedVariables hold schema + client metadata only. Character sections live in each module's own SV file.
 ## Author: avfurkanengin
 ## Version: 1.0.0
 ## SavedVariables: AzerothDataCollectorDB

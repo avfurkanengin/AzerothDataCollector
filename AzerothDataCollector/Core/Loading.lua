@@ -1,5 +1,5 @@
 --[[
-  ADDON_LOADED / PLAYER_LOGIN callback queues (same idea as DataStore Events/Loading.lua).
+  Queued ADDON_LOADED / PLAYER_LOGIN callbacks for module registration and deferred work.
 --]]
 
 local ADDON_NAME, AC = ...

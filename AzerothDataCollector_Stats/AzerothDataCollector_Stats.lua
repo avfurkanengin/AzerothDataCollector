@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Stats — SV: AzerothDataCollector_StatsDB
-	Kök + by_character[guid].stats = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].stats envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	Extra triggers: UNIT_INVENTORY_CHANGED, WEEKLY_REWARDS_UPDATE (weekly rewards / inventory sync).
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -24,7 +25,7 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	function AC.Scanners.stats()
 		local env = AC.NewEnvelope(false, nil)
 
-		-- Core combat stats (mirror DataStore_Stats structure as rows)
+		-- Core combat stats as flat rows
 		addRow(env, "health_max", "HealthMax", UnitHealthMax("player"))
 		addRow(env, "power_type", "PrimaryPowerType", UnitPowerType("player"))
 		addRow(env, "power_max", "PrimaryPowerMax", UnitPowerMax("player"))
@@ -142,7 +143,19 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.stats then AC.Scanners.stats() end
 	end)
+	local CM_DEB = 1.25
+	local CM_KEY = "adc_stats_challenge_maps"
 	AC.RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE", function()
-		if AC.Scanners.stats then AC.Scanners.stats() end
+		local fn = AC.Scanners.stats
+		if fn then AC.Debounce(CM_KEY, CM_DEB, fn) end
 	end)
+
+	local inventoryWeeklyDebounceSec = 1.0
+	local inventoryWeeklyKey = "adc_stats_inventory_weekly"
+	local function debouncedStatsInventoryAndWeekly()
+		local fn = AC.Scanners.stats
+		if fn then AC.Debounce(inventoryWeeklyKey, inventoryWeeklyDebounceSec, fn) end
+	end
+	AC.RegisterEvent("UNIT_INVENTORY_CHANGED", debouncedStatsInventoryAndWeekly)
+	AC.RegisterEvent("WEEKLY_REWARDS_UPDATE", debouncedStatsInventoryAndWeekly)
 end)

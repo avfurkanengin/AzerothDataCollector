@@ -1,6 +1,6 @@
 --[[
 	AzerothDataCollector_Garrison — SV: AzerothDataCollector_GarrisonDB
-	Kök + by_character[guid].garrison = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].garrison envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
 ]]
 local ADDON_NAME, _unused = ...
 

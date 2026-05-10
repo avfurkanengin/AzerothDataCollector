@@ -1,12 +1,25 @@
 --[[
 	AzerothDataCollector_Currencies — SV: AzerothDataCollector_CurrenciesDB
-	Kök + by_character[guid].currencies = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].currencies envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	CURRENCY_DISPLAY_UPDATE and transfer log churn debounced to avoid hammering SavedVariables.
 ]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
 if type(AC) ~= "table" then
 	return
+end
+
+local CURRENCY_DEBOUNCE_SEC = 3
+local DEBOUNCE_KEY_DISPLAY = "adc_currencies_display"
+local DEBOUNCE_KEY_TRANSFER = "adc_currencies_transfer"
+
+local function debouncedCurrencyScan(key)
+	local fn = AC.Scanners.currencies
+	if not fn then
+		return
+	end
+	AC.Debounce(key, CURRENCY_DEBOUNCE_SEC, fn)
 end
 
 AC.OnAddonLoaded(ADDON_NAME, function()
@@ -79,7 +92,10 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		if AC.Scanners.currencies then AC.Scanners.currencies() end
 	end)
 	AC.RegisterEvent("CURRENCY_DISPLAY_UPDATE", function()
-		if AC.Scanners.currencies then AC.Scanners.currencies() end
+		debouncedCurrencyScan(DEBOUNCE_KEY_DISPLAY)
+	end)
+	AC.RegisterEvent("CURRENCY_TRANSFER_LOG_UPDATE", function()
+		debouncedCurrencyScan(DEBOUNCE_KEY_TRANSFER)
 	end)
 	AC.RegisterEvent("CHAT_MSG_SYSTEM", function(_, msg)
 		if msg == ITEM_REFUND_MSG and AC.Scanners.currencies then

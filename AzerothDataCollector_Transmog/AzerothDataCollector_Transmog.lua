@@ -1,7 +1,8 @@
 --[[
 	AzerothDataCollector_Transmog — SV: AzerothDataCollector_TransmogDB
-	by_character[guid].collections_transmog — kategori özeti + toplanmış appearance kayıtları
-	by_character[guid].collections_transmog_sets — set koleksiyon durumu
+	by_character[guid].collections_transmog — category summary plus collected appearance rows.
+	by_character[guid].collections_transmog_sets — collected set snapshot.
+	TRANSMOG_COLLECTION_UPDATED debounced; TRANSMOG_COLLECTION_LOADED and PLAYER_ALIVE flush immediately.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -13,8 +14,10 @@ end
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
 
-	--- Çok geniş koleksiyonlar için güvenlik tavanı
+	--- Safety cap for very large wardrobes
 	local APPEARANCES_CAP = 28000
+	local TRANSMOG_DEBOUNCE_SEC = 2
+	local DEBOUNCE_KEY_TRANSMOG = "adc_collections_transmog"
 
 	local function scanTransmogSummary()
 		local rec = {}
@@ -216,7 +219,9 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		if AC.Scanners.collections_transmog then AC.Scanners.collections_transmog() end
 	end)
 	AC.RegisterEvent("TRANSMOG_COLLECTION_UPDATED", function()
-		if AC.Scanners.collections_transmog then AC.Scanners.collections_transmog() end
+		if AC.Scanners.collections_transmog then
+			AC.Debounce(DEBOUNCE_KEY_TRANSMOG, TRANSMOG_DEBOUNCE_SEC, AC.Scanners.collections_transmog)
+		end
 	end)
 	AC.RegisterEvent("TRANSMOG_COLLECTION_LOADED", function()
 		if AC.Scanners.collections_transmog then AC.Scanners.collections_transmog() end

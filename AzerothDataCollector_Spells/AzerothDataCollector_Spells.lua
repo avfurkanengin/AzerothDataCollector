@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Spells — SV: AzerothDataCollector_SpellsDB
-	Kök + by_character[guid].spells = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].spells envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	SPELLS_CHANGED and LEARNED_SPELL_IN_TAB (debounced; fire often).
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -60,7 +61,12 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.spells then AC.Scanners.spells() end
 	end)
-	AC.RegisterEvent("SPELLS_CHANGED", function()
-		if AC.Scanners.spells then AC.Scanners.spells() end
-	end)
+	local SPELL_DEB = 1.0
+	local SPELL_KEY = "adc_spells"
+	local function debouncedSpellScan()
+		local fn = AC.Scanners.spells
+		if fn then AC.Debounce(SPELL_KEY, SPELL_DEB, fn) end
+	end
+	AC.RegisterEvent("SPELLS_CHANGED", debouncedSpellScan)
+	AC.RegisterEvent("LEARNED_SPELL_IN_TAB", debouncedSpellScan)
 end)

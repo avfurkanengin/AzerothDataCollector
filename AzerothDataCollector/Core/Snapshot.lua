@@ -1,18 +1,18 @@
 --[[
-  Ana addon: AzerothDataCollectorDB — schema + client meta (DataStore’daki DataStore ana SV’ye benzer).
+  Main addon: AzerothDataCollectorDB — schema version plus client meta only (minimal root SavedVariables).
 
-  Her modül addon’u: tek bir SV global (DataStore modülü gibi bir .lua dosyası), iç yapı okunaklı kök alanlar:
+  Each module addon: one SavedVariables global (one Blizzard-persisted .lua file), readable root fields:
     schema_version, module_key, addon_folder, last_saved_at,
     by_character = { [guid] = { <section> = envelope, ... } }
 
-  Eski kayıtlarda "characters" kullanıldıysa yüklemede "by_character"a taşınır.
+  Legacy snapshots that used `characters` are migrated to `by_character` on load.
 --]]
 
 local ADDON_NAME, AC = ...
 
 AzerothDataCollectorDB = AzerothDataCollectorDB or {}
 
---- Addon klasör adı → SV global + hangi bölümler bu dosyada / özel meta_wallet
+--- Addon folder name → SV global and which sections live in this file / meta_wallet special case
 AC.MODULE_SV_CONFIG = {
 	["AzerothDataCollector_Meta"] = { sv_global = "AzerothDataCollector_MetaDB" },
 	["AzerothDataCollector_Currencies"] = { sv_global = "AzerothDataCollector_CurrenciesDB", sections = { "currencies" } },
@@ -136,7 +136,7 @@ function AC.InitRoot()
 	AC.UpdateClientMeta()
 end
 
---- Meta / wallet (Meta modülü SV dosyası)
+--- Meta / wallet (Meta module SavedVariables file)
 function AC.GetCharacterRoot()
 	AC.InitRoot()
 	local guid = AC.GetPlayerGuid()

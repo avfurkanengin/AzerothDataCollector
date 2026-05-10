@@ -1,6 +1,6 @@
 --[[
 	AzerothDataCollector_Professions — SV: AzerothDataCollector_ProfessionsDB
-	Kök + by_character[guid].professions = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].professions envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -91,7 +91,10 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.professions then AC.Scanners.professions() end
 	end)
+	local PROF_DEB = 1.0
+	local PROF_KEY = "adc_professions"
 	AC.RegisterEvent("SKILL_LINES_CHANGED", function()
-		if AC.Scanners.professions then AC.Scanners.professions() end
+		local fn = AC.Scanners.professions
+		if fn then AC.Debounce(PROF_KEY, PROF_DEB, fn) end
 	end)
 end)

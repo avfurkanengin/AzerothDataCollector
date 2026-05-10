@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Agenda — SV: AzerothDataCollector_AgendaDB
-	Kök + by_character[guid].agenda = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].agenda envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	Calendar / instance / raid timers: UPDATE_INSTANCE_INFO and related triggers (debounced).
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -8,6 +9,9 @@ local AC = AzerothDataCollector
 if type(AC) ~= "table" then
 	return
 end
+
+local AGENDA_DEBOUNCE_SEC = 2.75
+local DEBOUNCE_KEY_AGENDA = "adc_agenda"
 
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
@@ -68,12 +72,28 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		AC.CommitSection("agenda", env)
 	end
 
+	local function debouncedAgenda()
+		local fn = AC.Scanners.agenda
+		if fn then
+			RequestRaidInfo()
+			AC.Debounce(DEBOUNCE_KEY_AGENDA, AGENDA_DEBOUNCE_SEC, fn)
+		end
+	end
+
 	AC.RegisterEvent("PLAYER_ENTERING_WORLD", function()
 		RequestRaidInfo()
 		if AC.Scanners.agenda then C_Timer.After(2, AC.Scanners.agenda) end
 	end)
 
-	AC.RegisterEvent("UPDATE_INSTANCE_INFO", function()
-		if AC.Scanners.agenda then AC.Scanners.agenda() end
+	AC.RegisterEvent("UPDATE_INSTANCE_INFO", debouncedAgenda)
+
+	AC.RegisterEvent("CALENDAR_UPDATE_EVENT_LIST", function()
+		local fn = AC.Scanners.agenda
+		if fn then AC.Debounce(DEBOUNCE_KEY_AGENDA, AGENDA_DEBOUNCE_SEC, fn) end
+	end)
+
+	AC.RegisterEvent("RAID_INSTANCE_WELCOME", function()
+		RequestRaidInfo()
+		debouncedAgenda()
 	end)
 end)

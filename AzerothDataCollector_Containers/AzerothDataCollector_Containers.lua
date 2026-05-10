@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Containers — SV: AzerothDataCollector_ContainersDB
-	Kök + by_character[guid].containers = envelope | eski characters → by_character otomatik.
+	Root DB fields plus by_character[guid].containers envelope; legacy characters migrated automatically.
+	Also listens for bank tabs, warband/account bank slots, and related inventory events.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -160,5 +161,20 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	end)
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		AC.Debounce("bags_login", 1.25, delayedContainers)
+	end)
+	AC.RegisterEvent("PLAYERBANKSLOTS_CHANGED", function()
+		if AC.Scanners.containers then AC.Debounce("bags_bank", 0.75, delayedContainers) end
+	end)
+	AC.RegisterEvent("PLAYER_ACCOUNT_BANK_TAB_SLOTS_CHANGED", function()
+		if AC.Scanners.containers then AC.Debounce("bags_wb", 0.75, delayedContainers) end
+	end)
+	AC.RegisterEvent("BANK_TAB_SETTINGS_UPDATED", function()
+		if AC.Scanners.containers then AC.Debounce("bags_wb", 0.75, delayedContainers) end
+	end)
+	AC.RegisterEvent("VOID_STORAGE_UPDATE", function()
+		if AC.Scanners.containers then AC.Debounce("bags_void", 0.85, delayedContainers) end
+	end)
+	AC.RegisterEvent("VOID_STORAGE_CONTENTS_UPDATE", function()
+		if AC.Scanners.containers then AC.Debounce("bags_void", 0.85, delayedContainers) end
 	end)
 end)

@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Reputations — SV: AzerothDataCollector_ReputationsDB
-	Kök + by_character[guid].reputations = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].reputations envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	UPDATE_FACTION can spam; faction rescans ride a debounced full reputations scanner.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -8,6 +9,9 @@ local AC = AzerothDataCollector
 if type(AC) ~= "table" then
 	return
 end
+
+local REPUTATION_UPDATE_DELAY_SEC = 3
+local DEBOUNCE_KEY_FACTION = "adc_reputations_faction"
 
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
@@ -151,6 +155,9 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		if AC.Scanners.reputations then AC.Scanners.reputations() end
 	end)
 	AC.RegisterEvent("UPDATE_FACTION", function()
-		if AC.Scanners.reputations then AC.Scanners.reputations() end
+		if not AC.Scanners.reputations then
+			return
+		end
+		AC.Debounce(DEBOUNCE_KEY_FACTION, REPUTATION_UPDATE_DELAY_SEC, AC.Scanners.reputations)
 	end)
 end)

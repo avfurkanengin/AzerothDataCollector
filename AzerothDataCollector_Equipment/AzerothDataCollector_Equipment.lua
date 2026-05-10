@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Equipment — SV: AzerothDataCollector_EquipmentDB
-	Slot özeti + mücevher yuvaları (C_Item) + istatistik tablosu; silah görünmez büyü varsa Inventory API.
+	Per-slot snapshot, gems/sockets via C_Item, stat table; invisible weapon temp enchants use inventory APIs where needed.
+	Frequent PLAYER_EQUIPMENT_* style events debounced together.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -10,6 +11,8 @@ if type(AC) ~= "table" then
 end
 
 local NUM_SLOTS = 30
+local EQUIP_DEBOUNCE_SEC = 0.45
+local DEBOUNCE_KEY_EQUIPMENT = "adc_equipment"
 
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
@@ -126,12 +129,16 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		AC.CommitSection("equipment", env)
 	end
 
-	AC.RegisterEvent("PLAYER_EQUIPMENT_UPDATED", function()
-		if AC.Scanners.equipment then AC.Scanners.equipment() end
-	end)
-	AC.RegisterEvent("PLAYER_AVG_ITEM_LEVEL_UPDATE", function()
-		if AC.Scanners.equipment then AC.Scanners.equipment() end
-	end)
+	local function debouncedEquipment()
+		local fn = AC.Scanners.equipment
+		if fn then
+			AC.Debounce(DEBOUNCE_KEY_EQUIPMENT, EQUIP_DEBOUNCE_SEC, fn)
+		end
+	end
+
+	AC.RegisterEvent("PLAYER_EQUIPMENT_UPDATED", debouncedEquipment)
+	AC.RegisterEvent("PLAYER_AVG_ITEM_LEVEL_UPDATE", debouncedEquipment)
+	AC.RegisterEvent("PLAYER_EQUIPMENT_CHANGED", debouncedEquipment)
 	AC.RegisterEvent("PLAYER_ALIVE", function()
 		if AC.Scanners.equipment then AC.Scanners.equipment() end
 	end)

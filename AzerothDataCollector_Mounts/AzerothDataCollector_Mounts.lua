@@ -1,4 +1,7 @@
---[[ AzerothDataCollector_Mounts — SV: AzerothDataCollector_MountsDB — by_character[guid].collections_mounts ]]
+--[[
+	AzerothDataCollector_Mounts — SV: AzerothDataCollector_MountsDB — by_character[guid].collections_mounts
+	On first COMPANION_UPDATE mounts (and optionally pet journal bootstrap) run once via a disposable frame listener; Pets does not subscribe to COMPANION_UPDATE again (avoids duplicate snapshots).
+]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector
@@ -43,4 +46,18 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.RegisterEvent("NEW_MOUNT_ADDED", function()
 		if AC.Scanners.collections_mounts then AC.Scanners.collections_mounts() end
 	end)
+
+	do
+		local companionBootstrapFrame = CreateFrame("Frame")
+		companionBootstrapFrame:RegisterEvent("COMPANION_UPDATE")
+		companionBootstrapFrame:SetScript("OnEvent", function(self)
+			self:UnregisterEvent("COMPANION_UPDATE")
+			if AC.Scanners.collections_mounts then
+				pcall(AC.Scanners.collections_mounts)
+			end
+			if AC.Scanners.collections_pets then
+				pcall(AC.Scanners.collections_pets)
+			end
+		end)
+	end
 end)

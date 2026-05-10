@@ -1,4 +1,5 @@
---[[ AzerothDataCollector_Pets — SV: AzerothDataCollector_PetsDB — by_character[guid].collections_pets ]]
+--[[ AzerothDataCollector_Pets — SV: AzerothDataCollector_PetsDB — by_character[guid].collections_pets
+	First COMPANION_UPDATE bootstrap runs from AzerothDataCollector_Mounts.lua (duplicate events avoided there).]]
 local ADDON_NAME, _unused = ...
 
 local AC = AzerothDataCollector

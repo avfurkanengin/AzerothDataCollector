@@ -1,6 +1,6 @@
 --[[
 	AzerothDataCollector_Delves — SV: AzerothDataCollector_DelvesDB
-	Kök + by_character[guid].delves = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].delves envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
 ]]
 local ADDON_NAME, _unused = ...
 

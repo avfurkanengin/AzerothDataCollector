@@ -1,7 +1,7 @@
 --[[
-	AzerothDataCollector_GuildBank — SV: AzerothDataCollector_GuildBankDB by_character[guid].guild_bank
-
-	Lonca bankası penceresi açıkken sekme içerikleri okunur; kapalıyken yalnızca meta + partial.
+	AzerothDataCollector_GuildBank — SV: AzerothDataCollector_GuildBankDB — by_character[guid].guild_bank
+	Guild bank tab contents are scanned when the window is open; when closed only metadata plus partial=true.
+	Frequent GUILDBANK_* events are debounced; InteractionManager GuildBanker show/hide drives rescans.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -109,13 +109,25 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		scanGuildBankImmediate()
 	end
 
-	local function deferredScan()
-		C_Timer.After(0.08, scanGuildBankImmediate)
+	local GUILD_BANK_DEBOUNCE_SEC = 0.35
+	local DEBOUNCE_KEY_GUILD_BANK = "adc_guild_bank"
+
+	local function debouncedGuildScan()
+		AC.Debounce(DEBOUNCE_KEY_GUILD_BANK, GUILD_BANK_DEBOUNCE_SEC, scanGuildBankImmediate)
 	end
 
-	AC.RegisterEvent("GUILDBANKFRAME_OPENED", deferredScan)
-	AC.RegisterEvent("GUILDBANKFRAME_CLOSED", function()
-		scanGuildBankImmediate()
+	AC.RegisterEvent("GUILDBANKFRAME_OPENED", debouncedGuildScan)
+	AC.RegisterEvent("GUILDBANKFRAME_CLOSED", debouncedGuildScan)
+	AC.RegisterEvent("GUILDBANK_UPDATE", debouncedGuildScan)
+	AC.RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", debouncedGuildScan)
+	AC.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", function(_, paneType)
+		if Enum and Enum.PlayerInteractionType and paneType == Enum.PlayerInteractionType.GuildBanker then
+			debouncedGuildScan()
+		end
 	end)
-	AC.RegisterEvent("GUILDBANK_UPDATE", deferredScan)
+	AC.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_HIDE", function(_, paneType)
+		if Enum and Enum.PlayerInteractionType and paneType == Enum.PlayerInteractionType.GuildBanker then
+			debouncedGuildScan()
+		end
+	end)
 end)

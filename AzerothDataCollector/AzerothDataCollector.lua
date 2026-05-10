@@ -1,6 +1,6 @@
 --[[
-  AzerothDataCollector — entry .lua (addon klasör / .toc ile aynı taban ad).
-  SavedVariables: AzerothDataCollectorDB — sadece schema_version + client; karakter verisi modül dosyalarında by_character ile.
+  AzerothDataCollector — main entry Lua (basename matches addon folder / .toc).
+  SavedVariables: AzerothDataCollectorDB — schema_version + client only; per-character data lives in module SV files under by_character.
 ]]
 
 local ADDON_NAME, AC = ...
@@ -54,13 +54,13 @@ function AC.RunFullScan(reason)
 		end
 	end
 
-	-- DataStore tarzı: otomatik taramada sohbeti doldurmaz; slash ile zorlamada bildirir.
+	-- Quiet automatic scans (no spam); optional confirmation on slash-triggered scans or ADC_DEBUG.
 	if reason == "slash_command" or _G.ADC_DEBUG then
 		print("|cff33ff99[ADC]|r Full snapshot updated (" .. tostring(reason) .. ").")
 	end
 end
 
---- Oyuncu dünyadayken GUID bazen birkaç saniye gecikebilir; sessiz yeniden dene (slash gerekmez).
+--- GUID can lag a few seconds after entering world; retry quietly (no slash required).
 local function scheduleAutoFullScan(reason)
 	if RequestTimePlayed then
 		pcall(RequestTimePlayed)
@@ -95,7 +95,7 @@ local function slashRunFullScan(reason)
 		print("|cffff5555[ADC]|r Addon not ready yet.")
 		return
 	end
-	-- Slash ile anında dene (GUID beklenmediyse kullanıcıya net mesaj için RunFullScan dışından da retry)
+	-- Slash path retries until GUID exists so RunFullScan can show a clear message if needed.
 	reason = reason or "slash_command"
 	if UnitGUID("player") then
 		AD.RunFullScan(reason)
@@ -109,7 +109,7 @@ local function slashRunFullScan(reason)
 			return
 		end
 		if a >= 75 then
-			print("|cffff5555[ADC]|r Oyuncu henüz hazır değil; birkaç saniye sonra tekrar dene.")
+			print("|cffff5555[ADC]|r Player not ready yet; try again in a few seconds.")
 			return
 		end
 		C_Timer.After(0.35, try)

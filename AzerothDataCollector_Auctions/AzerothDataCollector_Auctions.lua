@@ -1,6 +1,7 @@
 --[[
 	AzerothDataCollector_Auctions — SV: AzerothDataCollector_AuctionsDB
-	Kök + by_character[guid].auctions = envelope | eski characters → by_character.
+	Root DB fields plus by_character[guid].auctions envelope; legacy characters migrated via AC.EnsureModuleSavedVariables.
+	Auction house events merged under one debounced scan.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -9,8 +10,20 @@ if type(AC) ~= "table" then
 	return
 end
 
+local AUCTION_DEBOUNCE_SEC = 1.25
+local DEBOUNCE_KEY_AUCTION = "adc_auctions"
+
 AC.OnAddonLoaded(ADDON_NAME, function()
 	AC.EnsureModuleSavedVariables(ADDON_NAME)
+
+	local function debouncedAuctions()
+		local fn = AC.Scanners.auctions
+		if not fn then
+			return
+		end
+		AC.Debounce(DEBOUNCE_KEY_AUCTION, AUCTION_DEBOUNCE_SEC, fn)
+	end
+
 	function AC.Scanners.auctions()
 		local env = AC.NewEnvelope(true, "auction_house_not_recently_loaded")
 
@@ -54,7 +67,21 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		AC.CommitSection("auctions", env)
 	end
 
-	AC.RegisterEvent("AUCTION_HOUSE_SHOW", function()
-		if AC.Scanners.auctions then AC.Scanners.auctions() end
+	local auctionEventsRetail = {
+		"AUCTION_HOUSE_SHOW",
+		"AUCTION_HOUSE_CLOSED",
+		"OWNED_AUCTIONS_UPDATED",
+		"AUCTION_HOUSE_AUCTION_CREATED",
+		"BIDS_UPDATED",
+	}
+
+	for _, ev in ipairs(auctionEventsRetail) do
+		AC.RegisterEvent(ev, debouncedAuctions)
+	end
+
+	AC.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", function(_, paneType)
+		if Enum and Enum.PlayerInteractionType and paneType == Enum.PlayerInteractionType.Auctioneer then
+			debouncedAuctions()
+		end
 	end)
 end)

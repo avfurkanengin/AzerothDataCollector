@@ -1,8 +1,8 @@
 --[[
 	AzerothDataCollector_Meta — SV: AzerothDataCollector_MetaDB
-	Kök: schema_version, module_key, addon_folder, last_saved_at
-	by_character[guid].meta  — Unit* + bölge + ilvl + spec + server_time; TIME_PLAYED_MSG ile oynama süreleri
-	by_character[guid].wallet — GetMoney() (copper), updated_at, partial alanları
+	Root fields: schema_version, module_key, addon_folder, last_saved_at.
+	by_character[guid].meta — Unit*, zone/subzone, item level summary, specialization, server time string; TIME_PLAYED_MSG fills time_played_*.
+	by_character[guid].wallet — GetMoney() in copper plus updated_at, partial, partial_reason.
 ]]
 local ADDON_NAME, _unused = ...
 
@@ -83,6 +83,12 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 	end)
 	AC.RegisterEvent("ZONE_CHANGED", function()
 		if AC.Scanners.meta then AC.Scanners.meta() end
+	end)
+	AC.RegisterEvent("ZONE_CHANGED_INDOORS", function()
+		if AC.Scanners.meta then AC.Scanners.meta() end
+	end)
+	AC.RegisterEvent("PLAYER_LOGOUT", function()
+		pcall(bindMetaMoney)
 	end)
 	AC.RegisterEvent("PLAYER_XP_UPDATE", bindMetaMoney)
 	AC.RegisterEvent("PLAYER_UPDATE_RESTING", bindMetaMoney)

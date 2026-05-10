@@ -1,8 +1,8 @@
 ## Interface: 120000
 ## Title: Azeroth Data Collector — Achievements
-## Category: Other
+## Category: AzerothAiCompanion
 ## Group: AzerothDataCollector
-## IconTexture: Interface\Icons\garrison_building_storehouse
+## IconTexture: Interface\AddOns\AzerothDataCollector\Media\AzerothAiCompanion
 ## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector (Dependencies).
 ## Author: avfurkanengin
 ## Version: 1.0.0
