@@ -5,7 +5,7 @@
 
 local ADDON_NAME, AC = ...
 
-AC.SCHEMA_VERSION = 3
+AC.SCHEMA_VERSION = 4
 
 -- Envelope-backed sections only (meta + wallet are plain tables; not in this list)
 AC.SECTION_NAMES = {
@@ -28,6 +28,7 @@ AC.SECTION_NAMES = {
 	"spells",
 	"garrison",
 	"delves",
+	"guild_bank",
 }
 
 function AC.NewEnvelope(partial, partialReason)

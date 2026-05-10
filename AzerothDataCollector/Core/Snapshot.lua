@@ -36,6 +36,7 @@ AC.MODULE_SV_CONFIG = {
 	["AzerothDataCollector_Spells"] = { sv_global = "AzerothDataCollector_SpellsDB", sections = { "spells" } },
 	["AzerothDataCollector_Garrison"] = { sv_global = "AzerothDataCollector_GarrisonDB", sections = { "garrison" } },
 	["AzerothDataCollector_Delves"] = { sv_global = "AzerothDataCollector_DelvesDB", sections = { "delves" } },
+	["AzerothDataCollector_GuildBank"] = { sv_global = "AzerothDataCollector_GuildBankDB", sections = { "guild_bank" } },
 }
 
 do

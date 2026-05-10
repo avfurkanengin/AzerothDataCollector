@@ -22,6 +22,7 @@ AC.FULL_SCAN_SEQUENCE = {
 	"collections_pets",
 	"collections_transmog",
 	"containers",
+	"guild_bank",
 	"quests",
 	"achievements",
 	"professions",

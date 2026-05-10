@@ -1,6 +1,6 @@
 # Azeroth Data Collector
 
-**20 ayrı WoW eklentisi** (`1` ana + `19` modül) — `Interface/AddOns/` altında yan yana klasörler. Ana paket **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
+**21 ayrı WoW eklentisi** (`1` ana + `20` modül) — `Interface/AddOns/` altında yan yana klasörler. Ana paket **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
 
 - **Ana addon** [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc): `## SavedVariables: AzerothDataCollectorDB` → yalnızca **schema sürümü + client meta** (`WTF/.../SavedVariables/AzerothDataCollector.lua`).
 - **Her modül** kendi klasörüne paralel **`## SavedVariables: ...DB`** bildirir; Blizzard her biri için ayrı dosya yazar (ör. `AzerothDataCollector_Quests.lua`, `AzerothDataCollector_Currencies.lua`, …). DataStore’daki gibi **birden çok SV dosyası**.
@@ -21,6 +21,7 @@ AzerothDataCollector_Containers/
 AzerothDataCollector_Currencies/
 AzerothDataCollector_Delves/
 AzerothDataCollector_Equipment/
+AzerothDataCollector_GuildBank/
 AzerothDataCollector_Garrison/
 AzerothDataCollector_Mail/
 AzerothDataCollector_Meta/
@@ -45,7 +46,10 @@ Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/Sa
 |---------------|----------------|
 | `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
 | `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök alanlar + **`by_character[guid].meta`** (temel kimlik: isim/realm/GUID/seviye, sınıf/ırk, taraf; bölge/alt-bölge; ilvl özeti; aktif uzmanlık; sunucu saati damgası; `RequestTimePlayed` ile gelen **`time_played_total_sec` / `time_played_level_sec`**) ve **`wallet`** (**`copper`** = `GetMoney()`, `partial` / `partial_reason` şimdilik tam tarama için sıfır) |
-| `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aynı kök + `by_character[guid].quests` (envelope) |
+| `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aktif günlük (`record_kind=quest_log_active`, `objectives[]`); tamamlanan ID’ler `completed_quest_ids_chunk` satırları + `_quests_completed_meta` (50k üstü kesilir); DataStore’a yakın görünüm metni için hedef başına uzunluk tavanı var |
+| `AzerothDataCollector_Achievements.lua` | `AzerothDataCollector_AchievementsDB` — tamamlanan `achievement_completed`; her biri **`criteria[]`**; güvenlik tavanı (~40k) |
+| `AzerothDataCollector_Equipment.lua` | `AzerothDataCollector_EquipmentDB` — slot: `gems[]`, **`stats`**, **`temp_enchant_spell_id`** |
+| `AzerothDataCollector_GuildBank.lua` | `AzerothDataCollector_GuildBankDB` — `guild_bank`; pencere **kapalı** iken **`partial`** |
 | `AzerothDataCollector_Mounts.lua` | `AzerothDataCollector_MountsDB` → `by_character[guid].collections_mounts` |
 | `AzerothDataCollector_Pets.lua` | `AzerothDataCollector_PetsDB` → `by_character[guid].collections_pets` |
 | `AzerothDataCollector_Transmog.lua` | `AzerothDataCollector_TransmogDB` → `collections_transmog` (öz `record_kind`; kategori özeti + `appearance_collected` satırları) + `collections_transmog_sets` |
@@ -53,7 +57,7 @@ Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/Sa
 
 **Mounts / pets / xmog ayırımı:** Eski **`AzerothDataCollector_Collections*`** klasörünü ve `AzerothDataCollector_Collections.lua` SV dosyasını kaldırıp yerine üç modül kullan (**Mount/Pets/Transmog**). Eski koleksiyon SV’si oyunda silinebilir; yeni üçlüyü AddOns’ta işaretle.
 
-**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). `schema_version` ana DB’de ve modül varsayılanında **3** (başarı satır biçimi + koleksiyon bölümü güncellendiği için).
+**Migrasyon (`characters` → `by_character`):** Eski oturumlarda yazılmış `characters[...]` tabloları `AC.EnsureModuleSavedVariables` ile `by_character`a taşınır (`characters` silinir). `schema_version` ana DB ve modül varsayılanı **4** (quests/envelope biçimi, achievements+criteria, equipment genişlemesi, `guild_bank` bölümü).
 
 **Diske yazma:** Oturum içi bellekte güncellenir; Blizzard dosyayı tipik olarak **`/reload` veya tam çıkış** sonrası yazar (DataStore ile aynı). Slash zorunlu değil.
 

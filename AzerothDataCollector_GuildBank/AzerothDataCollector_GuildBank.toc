@@ -1,0 +1,12 @@
+## Interface: 120000
+## Title: Azeroth Data Collector — Guild bank
+## Category: Other
+## Group: AzerothDataCollector
+## IconTexture: Interface\Icons\garrison_building_storehouse
+## Notes: Lonca bankası taraması; tam veri için oyun içi lonca bankası penceresi açık olmalı.
+## Author: avfurkanengin
+## Version: 1.0.0
+## SavedVariables: AzerothDataCollector_GuildBankDB
+## Dependencies: AzerothDataCollector
+
+AzerothDataCollector_GuildBank.lua
