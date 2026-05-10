@@ -1,5 +1,5 @@
 --[[
-  AzerothDataCollector_Main — entry .lua (klasör / .toc ile aynı taban ad).
+  AzerothDataCollector — entry .lua (addon klasör / .toc ile aynı taban ad).
   SavedVariables: AzerothDataCollectorDB
 ]]
 
@@ -56,6 +56,28 @@ function AC.RunFullScan(reason)
 	end
 end
 
+local function slashRunFullScan(reason)
+	local AD = _G.AzerothDataCollector
+	if type(AD) ~= "table" or type(AD.RunFullScan) ~= "function" then
+		print("|cffff5555[ADC]|r Addon not ready yet.")
+		return
+	end
+	AD.RunFullScan(reason or "slash_command")
+end
+
+SLASH_ADC_AZEROTH_DATA1 = "/adc"
+SLASH_ADC_AZEROTH_DATA2 = "/azerothdata"
+SLASH_ADC_AZEROTH_DATA3 = "/azdatacollect"
+SLASH_ADC_AZEROTH_DATA4 = "/azadc"
+SlashCmdList["ADC_AZEROTH_DATA"] = function()
+	slashRunFullScan("slash_command")
+end
+
+SLASH_ADC_LEGACY_ACC1 = "/acc"
+SlashCmdList["ADC_LEGACY_ACC"] = function()
+	slashRunFullScan("slash_command")
+end
+
 local function scheduleFullScan(reason)
 	if RequestTimePlayed then
 		pcall(RequestTimePlayed)
@@ -82,14 +104,3 @@ pewFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 pewFrame:SetScript("OnEvent", function()
 	scheduleFullScan("player_entering_world")
 end)
-
-SLASH_AZEROTHDATACOLLECTOR1 = "/adc"
-SLASH_AZEROTHDATACOLLECTOR2 = "/azerothdata"
-SlashCmdList["AZEROTHDATACOLLECTOR"] = function()
-	AC.RunFullScan("slash_command")
-end
-
-SLASH_ADCLEGACY_ACC1 = "/acc"
-SlashCmdList["ADCLEGACY_ACC"] = function()
-	AC.RunFullScan("slash_command")
-end

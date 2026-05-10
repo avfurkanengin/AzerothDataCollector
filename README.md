@@ -1,14 +1,15 @@
 # Azeroth Data Collector
 
-**18 ayrı WoW eklentisi** — hepsi `Interface/AddOns/` altında **aynı seviyede** klasör: `AzerothDataCollector_<Ad>/` (ana paket de **`AzerothDataCollector_Main`**). Her birinin kendi **`.toc`** ve kendi **tek giriş `.lua`** dosyası vardır; ortak `Modules/` kabı yok.
+**18 ayrı WoW eklentisi** — `Interface/AddOns/` altında yan yana klasörler. Ana paket klasörü **`AzerothDataCollector`** (DataStore’daki **`DataStore`** yapısına paralel); modüller **`AzerothDataCollector_<Alan>/`**. Her birinin kendi `.toc` ve tek giriş `.lua` dosyası var.
 
-Veri tek bir **SavedVariables** global’ına (`AzerothDataCollectorDB`) yazılır; bu değişken **yalnızca `AzerothDataCollector_Main`** `.toc` dosyasında tanımlıdır. Lua tarafında paylaşılan API hâlâ **`_G.AzerothDataCollector`** (modüller `local AC = AzerothDataCollector` kullanır).
+Veri tek **SavedVariables** global’ında (`AzerothDataCollectorDB`); tanım yalnızca ana [`AzerothDataCollector/AzerothDataCollector.toc`](AzerothDataCollector/AzerothDataCollector.toc) içinde. Paylaşılan API: **`_G.AzerothDataCollector`** (`local AC = AzerothDataCollector`).
 
 Repo: [github.com/avfurkanengin/AzerothDataCollector](https://github.com/avfurkanengin/AzerothDataCollector)
 
-## Klasör yapısı (AddOns kökünde yan yana)
+## Klasör yapısı (AddOns kökünde)
 
 ```
+AzerothDataCollector/                 ← Ana: Core/ + AzerothDataCollector.toc + AzerothDataCollector.lua
 AzerothDataCollector_Achievements/
 AzerothDataCollector_Agenda/
 AzerothDataCollector_Auctions/
@@ -19,7 +20,6 @@ AzerothDataCollector_Delves/
 AzerothDataCollector_Equipment/
 AzerothDataCollector_Garrison/
 AzerothDataCollector_Mail/
-AzerothDataCollector_Main/          ← Core/ + AzerothDataCollector_Main.toc + AzerothDataCollector_Main.lua (+ SavedVariables)
 AzerothDataCollector_Meta/
 AzerothDataCollector_Professions/
 AzerothDataCollector_Quests/
@@ -29,19 +29,25 @@ AzerothDataCollector_Stats/
 AzerothDataCollector_Talents/
 ```
 
-Oyunda **`_retail_/Interface/AddOns/`** altına istediğin modül klasörlerini kopyala; **mutlaka `AzerothDataCollector_Main`** da olsun. Her modül `.toc` içinde **`Dependencies: AzerothDataCollector_Main`** ile ana klasöre bağlıdır.
+**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır.
 
-Etkinleştirdiğin her modül, **`AzerothDataCollector` global’ında** ilgili tarayıcıyı (`AC.Scanners[...]`) kaydeder.
+## Kayıtlı değişkenler (SavedVariables)
 
-Kayıtlı değişken dosyası (hesap düzeyi, örnek):
+Hesap düzeyi (örnek):
 
-`World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/AzerothDataCollector_Main.lua`
+`World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/AzerothDataCollector.lua`
 
-Eski sürümde ana klasör adı **`AzerothDataCollector`** idi ve SV dosyası çoğu kurulumda **`AzerothDataCollector.lua`** olurdu. Taşıdıysan içindeki **`AzerothDataCollectorDB = { ... }`** tablosunu yeni ada uygun dosyaya kopyalayabilir veya dosyayı doğrudan yeniden adlandırabilirsin (değişken adı `AzerothDataCollectorDB` olarak kalmalı).
+**Güncelleme:** Daha önce ana klasör **`AzerothDataCollector_Main`** kullandıysan: eski klasörü AddOns’tan kaldırıp yeni **`AzerothDataCollector`** klasörünü koy. Eski **`AzerothDataCollector_Main.lua`** dosyasını **`AzerothDataCollector.lua`** olarak yeniden adlandır veya içindeki **`AzerothDataCollectorDB = { ... }`** bloğunu yeni dosyaya taşı (global adı değişmez).
 
-## Komutlar
+## Komutlar (chat)
 
-`/adc`, `/azerothdata`, `/acc` (tanım `AzerothDataCollector_Main/AzerothDataCollector_Main.lua` içinde)
+- `/adc`
+- `/azerothdata`
+- `/azdatacollect`
+- `/azadc`
+- `/acc`
+
+Tanım: [`AzerothDataCollector/AzerothDataCollector.lua`](AzerothDataCollector/AzerothDataCollector.lua). Çakışma teşhisi: `/run print(SlashCmdList["ADC_AZEROTH_DATA"] ~= nil)`.
 
 ## Git
 

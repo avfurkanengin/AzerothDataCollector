@@ -3,9 +3,9 @@
 ## Category: Azeroth Data Collector
 ## Group: Azeroth Data Collector
 ## IconTexture: Interface\Icons\garrison_building_storehouse
-## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector_Main (Dependencies).
+## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector (Dependencies).
 ## Author: avfurkanengin
 ## Version: 1.0.0
-## Dependencies: AzerothDataCollector_Main
+## Dependencies: AzerothDataCollector
 
 AzerothDataCollector_Reputations.lua

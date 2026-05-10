@@ -1,7 +1,6 @@
 ## Interface: 120000
 ## Title: Azeroth Data Collector (Main)
 ## Category: Azeroth Data Collector
-## Group: Azeroth Data Collector
 ## IconTexture: Interface\Icons\garrison_building_storehouse
 ## Notes: Ana paket — SavedVariables (AzerothDataCollectorDB). Diğer “AzerothDataCollector_*” modülleri ayrı klasörler; hepsini AddOns köküne koy (aynı seviye).
 ## Author: avfurkanengin
@@ -13,4 +12,4 @@ Core/Snapshot.lua
 Core/Debouncer.lua
 Core/Loading.lua
 Core/Events.lua
-AzerothDataCollector_Main.lua
+AzerothDataCollector.lua
