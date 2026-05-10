@@ -33,7 +33,7 @@ AzerothDataCollector_Stats/
 AzerothDataCollector_Talents/
 ```
 
-**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır. Ana ve modül `.toc` dosyalarında **`## Group` / `## Category` aynı metin** olmalı; ana pakette group eksik olursa bazı client sürümlerinde liste “ana ayrı, modüller ayrı” düz görünür.
+**Mutlaka** `AzerothDataCollector/` ana paketini de kopyala ve etkinleştir. Modüller `.toc` içinde **`## Dependencies: AzerothDataCollector`** ile bağlıdır. Tüm TOC’lerde **`## Group: AzerothDataCollector`** (ana klasör adıyla tutarlı — istemci gruplaşması / alt satır girintisi için) ve wiki’ye uygun ortak **`## Category: Other`** kullanılıyor; kategori için bkz. [Addon Categories](https://warcraft.wiki.gg/wiki/Addon_Categories). TOC değişince liste bazen **`/reload` veya tam çıkış** sonrası oturuyor.
 
 ## Kayıtlı değişkenler (SavedVariables)
 
@@ -42,7 +42,7 @@ Hesap düzeyi örnek yol: `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/Sa
 | Dosya (örnek) | İçerik özeti |
 |---------------|----------------|
 | `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
-| `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök: `schema_version`, `module_key`, `addon_folder`, `last_saved_at`; `by_character[guid].meta` / `wallet` |
+| `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — kök alanlar + **`by_character[guid].meta`** (temel kimlik: isim/realm/GUID/seviye, sınıf/ırk, taraf; bölge/alt-bölge; ilvl özeti; aktif uzmanlık; sunucu saati damgası; `RequestTimePlayed` ile gelen **`time_played_total_sec` / `time_played_level_sec`**) ve **`wallet`** (**`copper`** = `GetMoney()`, `partial` / `partial_reason` şimdilik tam tarama için sıfır) |
 | `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — aynı kök + `by_character[guid].quests` (envelope) |
 | … | Diğer modüller aynı kalıp (`...DB`, `by_character[guid].<section>`) |
 

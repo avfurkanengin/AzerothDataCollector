@@ -1,7 +1,8 @@
 --[[
-	AzerothDataCollector_Meta — kendi SavedVariables: AzerothDataCollector_MetaDB
-	Kök alanlar: schema_version, module_key, addon_folder, last_saved_at,
-	by_character[guid] = { meta = {...}, wallet = {...} } (dosyada self-documenting; eski characters → otomatik by_character).
+	AzerothDataCollector_Meta — SV: AzerothDataCollector_MetaDB
+	Kök: schema_version, module_key, addon_folder, last_saved_at
+	by_character[guid].meta  — Unit* + bölge + ilvl + spec + server_time; TIME_PLAYED_MSG ile oynama süreleri
+	by_character[guid].wallet — GetMoney() (copper), updated_at, partial alanları
 ]]
 local ADDON_NAME, _unused = ...
 

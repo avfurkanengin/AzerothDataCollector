@@ -1,7 +1,7 @@
 ## Interface: 120000
 ## Title: Azeroth Data Collector — Garrison (legacy)
-## Category: Azeroth Data Collector
-## Group: Azeroth Data Collector
+## Category: Other
+## Group: AzerothDataCollector
 ## IconTexture: Interface\Icons\garrison_building_storehouse
 ## Notes: Stand-alone module addon. Requires addon folder AzerothDataCollector (Dependencies).
 ## Author: avfurkanengin
