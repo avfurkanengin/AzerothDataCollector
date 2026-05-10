@@ -60,7 +60,8 @@ Typical account path: `World of Warcraft/_retail_/WTF/Account/<AccountName>/Save
 | `AzerothDataCollector.lua` | `AzerothDataCollectorDB` — `schema_version`, `client` |
 | `AzerothDataCollector_Meta.lua` | `AzerothDataCollector_MetaDB` — root fields plus **`by_character[guid].meta`** (name/realm/GUID/level, class/race/faction; zone/subzone; item level summaries; specialization; server time string; **`time_played_total_sec`** / **`time_played_level_sec`** from `RequestTimePlayed`) and **`wallet`** (**`copper`** = `GetMoney()`, optional `partial` / `partial_reason`) |
 | `AzerothDataCollector_Quests.lua` | `AzerothDataCollector_QuestsDB` — active log (`record_kind=quest_log_active`, `objectives[]`); completed IDs in `completed_quest_ids_chunk` rows + `_quests_completed_meta` (IDs above ~50k are truncated); objective description strings capped for readability/size |
-| `AzerothDataCollector_Achievements.lua` | `AzerothDataCollector_AchievementsDB` — completed `achievement_completed` rows with **`criteria[]`** each; overall safety cap (~40k achievements) |
+| `AzerothDataCollector_Achievements.lua` | `AzerothDataCollector_AchievementsDB` — each achievement one **`achievement_entry`** row with **`completed`** (boolean), **`criteria[]`**, earned date fields when completed; overall safety cap (~40k rows) |
+| `AzerothDataCollector_Talents.lua` | `AzerothDataCollector_TalentsDB` — class/spec rows plus Retail **`trait_config`** + per-node **`trait_node`** (ranks, `selected`, `trait_spell_id`, `definition_id`) from `C_Traits` |
 | `AzerothDataCollector_Equipment.lua` | `AzerothDataCollector_EquipmentDB` — per-slot: `gems[]`, **`stats`**, **`temp_enchant_spell_id`** |
 | `AzerothDataCollector_GuildBank.lua` | `AzerothDataCollector_GuildBankDB` — `guild_bank`; when the guild bank UI is closed the section stays **`partial`** |
 | `AzerothDataCollector_Mounts.lua` | `AzerothDataCollector_MountsDB` → `by_character[guid].collections_mounts` |
@@ -70,7 +71,7 @@ Typical account path: `World of Warcraft/_retail_/WTF/Account/<AccountName>/Save
 
 **Mounts / pets / xmog split:** Remove legacy **`AzerothDataCollector_Collections*`** folders and the shared `AzerothDataCollector_Collections.lua` SV if you migrated; enable the Mount, Pets, and Transmog modules instead. Older collection SV blobs can be deleted in-game once you trust the replacement exports.
 
-**Migration (`characters` → `by_character`):** `AC.EnsureModuleSavedVariables` rewires legacy `characters[...]` tables into **`by_character`** and removes the obsolete key on load. `schema_version` **4** (main DB + defaults) denotes the quests envelope format, achievement+criteria payloads, richer equipment snapshot, and the dedicated `guild_bank` section.
+**Migration (`characters` → `by_character`):** `AC.EnsureModuleSavedVariables` rewires legacy `characters[...]` tables into **`by_character`** and removes the obsolete key on load. `schema_version` **5** extends **4** (quests envelope, achievement criteria detail, equipment snapshot, `guild_bank`) with achievements listing **earned and incomplete** rows (`achievement_entry.completed`) and Retail talent **`trait_node`** rows from `C_Traits.GetNodeInfo(configID, nodeID)`.
 
 **Disk persistence:** Tables update instantly in Lua memory; Blizzard flushes SavedVariables **`/reload` or logout** in normal cases—you do not need a slash command for snapshots to accumulate in RAM.
 

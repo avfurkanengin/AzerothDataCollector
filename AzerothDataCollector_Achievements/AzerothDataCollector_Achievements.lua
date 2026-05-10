@@ -1,7 +1,8 @@
 --[[
 	AzerothDataCollector_Achievements — SV: AzerothDataCollector_AchievementsDB
-	Completed achievements only (account-wide flag preserved); each row includes criteria[] detail.
-	Incomplete achievements are omitted to curb SavedVariables size; a leading `_achievement_totals` row summarizes caps and totals.
+	Each tracked achievement is stored once (`record_kind = achievement_entry`) with boolean `completed`.
+	Earned rows include earned date fields plus criteria[]; incomplete rows include criteria when the API exposes partial progress.
+	A leading `_achievement_totals` row (+ optional `_achievements_truncated`) tracks caps.
 	In session: ACHIEVEMENT_EARNED triggers a debounced full scan (event is rare enough to stay fairly fresh).
 ]]
 local ADDON_NAME, _unused = ...
@@ -62,7 +63,7 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 			id = -3,
 			name = "_achievement_totals",
 			total_points = GetTotalAchievementPoints and GetTotalAchievementPoints() or 0,
-			note_completed_only_detail = true,
+			note_lists_completed_and_incomplete = true,
 			safety_cap = SAFETY_CAP_ACHIEVEMENTS,
 		}
 
@@ -114,26 +115,29 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 					if achievementID then
 						local _, name, points, completed, month, day, year, _, flags =
 							GetAchievementInfo(achievementID)
-						if completed then
-							local isAccountWide = false
-							if type(flags) == "number" then
-								isAccountWide = bit.band(flags, ACCOUNT_FLAG) ~= 0
-							end
-							nStored = nStored + 1
-							env.records[#env.records + 1] = {
-								record_kind = "achievement_completed",
-								id = achievementID,
-								category_id = catID,
-								name = name or ("achievement_" .. achievementID),
-								points = points or 0,
-								achievement_scope = isAccountWide and "account_wide" or "character",
-								account_wide = isAccountWide and true or false,
-								earned_month = month,
-								earned_day = day,
-								earned_year = year,
-								criteria = achievementCriteriaTable(achievementID),
-							}
+						local isAccountWide = false
+						if type(flags) == "number" then
+							isAccountWide = bit.band(flags, ACCOUNT_FLAG) ~= 0
 						end
+						nStored = nStored + 1
+						local crit = achievementCriteriaTable(achievementID)
+						local row = {
+							record_kind = "achievement_entry",
+							id = achievementID,
+							category_id = catID,
+							name = name or ("achievement_" .. achievementID),
+							points = points or 0,
+							completed = completed and true or false,
+							achievement_scope = isAccountWide and "account_wide" or "character",
+							account_wide = isAccountWide and true or false,
+							criteria = crit,
+						}
+						if completed then
+							row.earned_month = month
+							row.earned_day = day
+							row.earned_year = year
+						end
+						env.records[#env.records + 1] = row
 					end
 				end
 			end
@@ -141,7 +145,7 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 
 		if nStored >= SAFETY_CAP_ACHIEVEMENTS then
 			env.partial = true
-			env.partial_reason = env.partial_reason or ("achievement_completed_capped_" .. SAFETY_CAP_ACHIEVEMENTS)
+			env.partial_reason = env.partial_reason or ("achievement_rows_capped_" .. SAFETY_CAP_ACHIEVEMENTS)
 			env.records[#env.records + 1] = {
 				record_kind = "_achievements_truncated",
 				id = -4,
