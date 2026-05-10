@@ -56,26 +56,31 @@ function AC.RunFullScan(reason)
 	end
 end
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+local function scheduleFullScan(reason)
+	if RequestTimePlayed then
+		pcall(RequestTimePlayed)
+	end
+	AC.Debounce("adc_full_scan", 2.5, function()
+		AC.RunFullScan(reason)
+	end)
+end
 
-eventFrame:SetScript("OnEvent", function(_, evt, arg1)
-	if evt == "ADDON_LOADED" and arg1 == ADDON_NAME then
-		if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
-			print("|cffff5555[ADC]|r Azeroth Data Collector requires retail (mainline).")
-			return
-		end
-		AC.InitRoot()
+AC.OnAddonLoaded(ADDON_NAME, function()
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		print("|cffff5555[ADC]|r Azeroth Data Collector requires retail (mainline).")
+		return
 	end
-	if evt == "PLAYER_ENTERING_WORLD" then
-		if RequestTimePlayed then
-			pcall(RequestTimePlayed)
-		end
-		C_Timer.After(2.5, function()
-			AC.RunFullScan("player_entering_world")
-		end)
-	end
+	AC.InitRoot()
+end)
+
+AC.OnPlayerLogin(function()
+	scheduleFullScan("player_login")
+end)
+
+local pewFrame = CreateFrame("Frame")
+pewFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+pewFrame:SetScript("OnEvent", function()
+	scheduleFullScan("player_entering_world")
 end)
 
 SLASH_AZEROTHDATACOLLECTOR1 = "/adc"

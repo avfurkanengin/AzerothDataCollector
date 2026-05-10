@@ -6,31 +6,33 @@ if type(AC) ~= "table" then
 	return
 end
 
-function AC.Scanners.delves()
-	local env = AC.NewEnvelope(true, "delve_api_optional_per_patch")
+AC.OnAddonLoaded(ADDON_NAME, function()
+	function AC.Scanners.delves()
+		local env = AC.NewEnvelope(true, "delve_api_optional_per_patch")
 
-	local used = false
+		local used = false
 
-	if C_Delves and C_Delves.GetTrackedDelveTier then
-		local ok, tier = pcall(function() return C_Delves.GetTrackedDelveTier() end)
-		if ok and tier ~= nil then
-			used = true
-			env.records[#env.records + 1] = {
-				id = 1,
-				name = "tracked_delve_tier",
-				tier = tier,
-			}
+		if C_Delves and C_Delves.GetTrackedDelveTier then
+			local ok, tier = pcall(function() return C_Delves.GetTrackedDelveTier() end)
+			if ok and tier ~= nil then
+				used = true
+				env.records[#env.records + 1] = {
+					id = 1,
+					name = "tracked_delve_tier",
+					tier = tier,
+				}
+			end
 		end
+
+		if used then
+			env.partial = false
+			env.partial_reason = nil
+		end
+
+		AC.CommitSection("delves", env)
 	end
 
-	if used then
-		env.partial = false
-		env.partial_reason = nil
-	end
-
-	AC.CommitSection("delves", env)
-end
-
-AC.RegisterEvent("PLAYER_ALIVE", function()
-	if AC.Scanners.delves then AC.Scanners.delves() end
+	AC.RegisterEvent("PLAYER_ALIVE", function()
+		if AC.Scanners.delves then AC.Scanners.delves() end
+	end)
 end)
