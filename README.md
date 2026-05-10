@@ -37,17 +37,17 @@ Hesap düzeyi (örnek):
 
 `World of Warcraft/_retail_/WTF/Account/<HesapAdı>/SavedVariables/AzerothDataCollector.lua`
 
+**Normal kullanım:** Slash veya `/run` gerekmez. Oturum açınca (`PLAYER_LOGIN` ve dünya yüklemesi sonrası) eklenti arka planda taramayı dener; **`AzerothDataCollectorDB` diske yazılır** Blizzard’ın kuralına göre: karakter seçip dünyadayken yüklemeden sonra **`/reload` veya tam çıkış`** ile dosyanın oluşması/güncellenmesi beklenir (DataStore ile aynı model).
+
+İsteğe bağlı olarak herhangi bir zamanda güncelleme için aşağıdaki slash komutları kullanılabilir.
+
 **Güncelleme:** Daha önce ana klasör **`AzerothDataCollector_Main`** kullandıysan: eski klasörü AddOns’tan kaldırıp yeni **`AzerothDataCollector`** klasörünü koy. Eski **`AzerothDataCollector_Main.lua`** dosyasını **`AzerothDataCollector.lua`** olarak yeniden adlandır veya içindeki **`AzerothDataCollectorDB = { ... }`** bloğunu yeni dosyaya taşı (global adı değişmez).
 
-## Komutlar (chat)
+## Komutlar (isteğe bağlı, manuel yenileme)
 
-- `/adc`
-- `/azerothdata`
-- `/azdatacollect`
-- `/azadc`
-- `/acc`
+- `/adc`, `/azerothdata`, `/azdatacollect`, `/azadc`, `/acc`
 
-Tanım: [`AzerothDataCollector/AzerothDataCollector.lua`](AzerothDataCollector/AzerothDataCollector.lua). Çakışma teşhisi: `/run print(SlashCmdList["ADC_AZEROTH_DATA"] ~= nil)`.
+Tanım: [`AzerothDataCollector/AzerothDataCollector.lua`](AzerothDataCollector/AzerothDataCollector.lua). Geliştirici teşhisinde chat’te `ADC_DEBUG = true` atanırsa otomatik taramadan sonra da onay mesajı basılır.
 
 ## Git
 
