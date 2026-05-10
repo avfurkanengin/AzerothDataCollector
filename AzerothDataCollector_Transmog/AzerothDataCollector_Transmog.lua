@@ -146,9 +146,15 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 
 	local function scanTransmogSets()
 		local rec = {}
-		if not C_TransmogSets.GetAllSets then return rec end
-		local sets = C_TransmogSets.GetAllSets()
-		if not sets then return rec end
+		if type(C_TransmogSets) ~= "table" or type(C_TransmogSets.GetAllSets) ~= "function" then
+			return rec
+		end
+		local okSets, sets = pcall(function()
+			return C_TransmogSets.GetAllSets()
+		end)
+		if not okSets or type(sets) ~= "table" then
+			return rec
+		end
 		for _, info in ipairs(sets) do
 			local collected = C_TransmogSets.IsSetCollected(info.setID)
 			local hid = info.hiddenUnlessCollected or false

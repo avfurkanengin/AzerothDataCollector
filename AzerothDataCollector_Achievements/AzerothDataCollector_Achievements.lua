@@ -38,9 +38,34 @@ AC.OnAddonLoaded(ADDON_NAME, function()
 		local nStored = 0
 		local ACCOUNT_FLAG = ACHIEVEMENT_FLAGS_ACCOUNT or 131072
 
+		--- Retail: GetCategoryNumAchievements(categoryID, includeAll|includeSuperseded) — güncel pathte 2 arg gerekli.
+		local function categoryAchievementTotal(catID)
+			local ok, total = pcall(function()
+				local t = GetCategoryNumAchievements(catID, true)
+				return t
+			end)
+			if ok and type(total) == "number" and total > 0 then
+				return total
+			end
+			ok, total = pcall(function()
+				return GetCategoryNumAchievements(catID, false)
+			end)
+			if ok and type(total) == "number" and total > 0 then
+				return total
+			end
+			ok, total = pcall(function()
+				local t = GetCategoryNumAchievements(catID)
+				return t
+			end)
+			if ok and type(total) == "number" then
+				return total
+			end
+			return 0
+		end
+
 		for _, catID in ipairs(cats) do
-			local na = GetCategoryNumAchievements(catID)
-			if na and na > 0 then
+			local na = categoryAchievementTotal(catID)
+			if na > 0 then
 				for ix = 1, na do
 					local achievementID = GetAchievementInfo(catID, ix)
 					if achievementID then
