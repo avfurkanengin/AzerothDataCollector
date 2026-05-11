@@ -4,7 +4,7 @@ AzerothDataCollectorDB = {
 },
 ["client"] = {
 ["locale"] = "enUS",
-["captured_at"] = 1778450602,
+["captured_at"] = 1778492168,
 ["game_build"] = "67451",
 ["interface_version"] = 120005,
 },

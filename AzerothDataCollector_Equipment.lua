@@ -2,6 +2,378 @@
 AzerothDataCollector_EquipmentDB = {
 ["module_key"] = "equipment",
 ["by_character"] = {
+["Player-3674-09D241D0"] = {
+["equipment"] = {
+["updated_at"] = 1778492005,
+["partial"] = false,
+["records"] = {
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 20,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 27,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 13,
+["EMPTY_SOCKET_PRISMATIC"] = 1,
+["ITEM_MOD_STAMINA_SHORT"] = 55,
+["RESISTANCE0_NAME"] = 12,
+},
+["name"] = "Devotee's Discarded Headdress",
+["slot"] = 1,
+["id"] = 212440,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212440::213743::::::80:266::5:7:6652:10397:10379:10355:10261:1524:10255:1:28:2462:::::|h[Devotee's Discarded Headdress]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 98,
+["stats"] = {
+["ITEM_MOD_HASTE_RATING_SHORT"] = 40,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 30,
+["ITEM_MOD_STAMINA_SHORT"] = 44,
+},
+["name"] = "Menagerie's Lost Relic",
+["slot"] = 2,
+["id"] = 237891,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:237891::::::::80:266::25:5:12265:6652:10395:10392:3171:1:28:2462:::::|h[Menagerie's Lost Relic]|h|r",
+["quality"] = 2,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 15,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 9,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 21,
+["ITEM_MOD_STAMINA_SHORT"] = 42,
+["RESISTANCE0_NAME"] = 11,
+},
+["name"] = "Hexflame Coven's Altar",
+["slot"] = 3,
+["id"] = 212072,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212072::::::::80:266::33:5:6652:10261:10390:10369:1524:1:28:2462:::::|h[Hexflame Coven's Altar]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 20,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 27,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 13,
+["ITEM_MOD_STAMINA_SHORT"] = 55,
+["RESISTANCE0_NAME"] = 17,
+},
+["name"] = "Hexflame Coven's Ritual Harness",
+["slot"] = 5,
+["id"] = 212077,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212077:7364:::::::80:266::5:6:10355:10373:6652:10256:1527:10255:1:28:2462:::::|h[Hexflame Coven's Ritual Harness]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 99,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 16,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 16,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 16,
+["EMPTY_SOCKET_PRISMATIC"] = 1,
+["ITEM_MOD_STAMINA_SHORT"] = 61,
+["RESISTANCE0_NAME"] = 10,
+},
+["name"] = "Consecrated Cord",
+["slot"] = 6,
+["id"] = 222816,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:222816::213479::::::80:266::13:10:10421:9633:8902:9627:10222:11109:8960:8790:11143:11307:10:28:2734:29:32:30:40:38:8:40:2351:46:211296:47:219506:48:222586:49:224072:51:226677::::Player-3674-09D241D0:|h[Consecrated Cord |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 20,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 27,
+["ITEM_MOD_VERSATILITY"] = 13,
+["ITEM_MOD_STAMINA_SHORT"] = 55,
+["RESISTANCE0_NAME"] = 15,
+},
+["name"] = "Hexflame Coven's Leggings",
+["slot"] = 7,
+["id"] = 212073,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212073:6538:::::::80:266::5:6:10355:10370:6652:10256:1527:10255:1:28:2462:::::|h[Hexflame Coven's Leggings]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 89,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 14,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 12,
+["ITEM_MOD_CR_LIFESTEAL_SHORT"] = 12,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 17,
+["ITEM_MOD_STAMINA_SHORT"] = 35,
+["RESISTANCE0_NAME"] = 10,
+},
+["name"] = "Membranous Slippers",
+["slot"] = 8,
+["id"] = 221149,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:221149:7418:::::::80:266::33:7:10390:41:10377:10383:10262:1654:10255:1:28:2462:::::|h[Membranous Slippers]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 89,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 11,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 13,
+["ITEM_MOD_VERSATILITY"] = 9,
+["EMPTY_SOCKET_PRISMATIC"] = 1,
+["ITEM_MOD_CR_AVOIDANCE_SHORT"] = 9,
+["ITEM_MOD_STAMINA_SHORT"] = 26,
+["RESISTANCE0_NAME"] = 8,
+},
+["name"] = "Deathshackle Wristwraps",
+["slot"] = 9,
+["id"] = 178704,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:178704:7385:213479::::::80:266::33:8:10390:40:10397:10377:10383:10262:9928:10255:1:28:2462:::::|h[Deathshackle Wristwraps]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 15,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 10,
+["ITEM_MOD_STAMINA_SHORT"] = 42,
+["ITEM_MOD_VERSATILITY"] = 20,
+["RESISTANCE0_NAME"] = 9,
+},
+["name"] = "Hexflame Coven's Sleeves",
+["slot"] = 10,
+["id"] = 212075,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212075::::::::80:266::5:6:10355:10372:6652:10256:1527:10255:1:28:2462:::::|h[Hexflame Coven's Sleeves]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 98,
+["stats"] = {
+["ITEM_MOD_HASTE_RATING_SHORT"] = 31,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 39,
+["ITEM_MOD_STAMINA_SHORT"] = 44,
+},
+["name"] = "Band of the Unseen Hand",
+["slot"] = 11,
+["id"] = 237890,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:237890::::::::80:266::25:5:12265:6652:10395:10393:3171:1:28:2462:::::|h[Band of the Unseen Hand]|h|r",
+["quality"] = 2,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_STAMINA_SHORT"] = 31,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 9,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 54,
+["EMPTY_SOCKET_PRISMATIC"] = 2,
+},
+["name"] = "Seal of the Poisoned Pact",
+["slot"] = 12,
+["id"] = 225578,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:225578:7340:213479:213479:::::80:266::5:7:6652:10355:10256:1527:10255:10395:10879:1:28:2462:::::|h[Seal of the Poisoned Pact]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_HASTE_RATING_SHORT"] = 29,
+},
+["name"] = "Ara-Kara Sacbrood",
+["slot"] = 13,
+["id"] = 219314,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:219314::::::::80:266::35:6:10390:6652:10383:10256:1661:10255:1:28:2462:::::|h[Ara-Kara Sacbrood]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 92,
+["stats"] = {
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 29,
+["ITEM_MOD_CR_AVOIDANCE_SHORT"] = 13,
+},
+["name"] = "Spymaster's Web",
+["slot"] = 14,
+["id"] = 220202,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:220202::::::::80:266::5:5:40:10355:10256:1527:10255:1:28:2462:::::|h[Spymaster's Web]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 89,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 11,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 14,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 8,
+["ITEM_MOD_STAMINA_SHORT"] = 26,
+["RESISTANCE0_NAME"] = 11,
+},
+["name"] = "Unkindled Waxweave Mozzetta",
+["slot"] = 15,
+["id"] = 219190,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:219190:7403:::::::80:266::124:5:6652:10377:10262:3198:10255:1:28:2462:::::|h[Unkindled Waxweave Mozzetta]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 89,
+["stats"] = {
+["ITEM_MOD_INTELLECT_SHORT"] = 85,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 11,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 27,
+["ITEM_MOD_STAMINA_SHORT"] = 46,
+["ITEM_MOD_DAMAGE_PER_SECOND_SHORT"] = 7.222222328186035,
+},
+["name"] = "Takazj's Entropic Edict",
+["slot"] = 16,
+["id"] = 212397,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:212397::::::::80:266::5:5:6652:10355:10262:1520:10255:1:28:2462:::::|h[Takazj's Entropic Edict]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 125,
+["stats"] = {
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 101,
+},
+["name"] = "Spring-Loaded Aqirite Fabric Cutters",
+["slot"] = 20,
+["id"] = 221787,
+["gems"] = {
+},
+["item_link"] = "|cnIQ3:|Hitem:221787:7378:::::::80:266::13:4:10828:10830:9631:8952:5:28:2734:29:81:38:7:40:1806:48:222630::::Player-3674-0759F5D3:|h[Spring-Loaded Aqirite Fabric Cutters |A:Professions-ChatIcon-Quality-Tier4:17:15::1|a]|h|r",
+["quality"] = 3,
+},
+{
+["item_level"] = 132,
+["stats"] = {
+["ITEM_MOD_INGENUITY_SHORT"] = 53,
+["ITEM_MOD_MULTICRAFT_SHORT"] = 35,
+},
+["name"] = "Artisan Tailor's Coat",
+["slot"] = 21,
+["id"] = 222852,
+["gems"] = {
+},
+["item_link"] = "|cnIQ3:|Hitem:222852::::::::80:266::13:3:10828:10830:9632:3:28:2734:38:8:40:2387::::Player-3674-09D241D0:|h[Artisan Tailor's Coat |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 3,
+},
+{
+["item_level"] = 105,
+["stats"] = {
+["ITEM_MOD_CRAFTING_SPEED_SHORT"] = 31,
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 31,
+},
+["name"] = "Proficient Needle Set",
+["slot"] = 22,
+["id"] = 222483,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:222483::::::::80:266::13:3:10827:10830:9632:3:28:2734:38:8:40:2190::::Player-3674-0A82D5D4:|h[Proficient Needle Set |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 2,
+},
+{
+["item_level"] = 102,
+["stats"] = {
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 76,
+},
+["name"] = "Runed Null Stone Rod",
+["slot"] = 23,
+["id"] = 224116,
+["gems"] = {
+},
+["item_link"] = "|cnIQ4:|Hitem:224116:7379:::::::80:266::13:4:10829:10830:9631:8952:5:28:2734:29:81:38:7:40:1621:45:222631::::Player-3674-09D241D0:|h[Runed Null Stone Rod |A:Professions-ChatIcon-Quality-Tier4:17:15::1|a]|h|r",
+["quality"] = 4,
+},
+{
+["item_level"] = 105,
+["stats"] = {
+["ITEM_MOD_CRAFTING_SPEED_SHORT"] = 44,
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 19,
+},
+["name"] = "Incanter's Shard",
+["slot"] = 24,
+["id"] = 215121,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:215121::::::::80:266::13:3:10827:10830:9632:3:28:2734:38:8:40:1267::::Player-3674-0B3D3CB6:|h[Incanter's Shard |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 2,
+},
+{
+["item_level"] = 118,
+["stats"] = {
+["ITEM_MOD_INGENUITY_SHORT"] = 52,
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 22,
+},
+["name"] = "Artisan Enchanter's Hat",
+["slot"] = 25,
+["id"] = 222849,
+["gems"] = {
+},
+["item_link"] = "|cnIQ3:|Hitem:222849::::::::80:266::13:3:10828:10830:9630:3:28:2734:38:6:40:2384::::Player-3674-0B140037:|h[Artisan Enchanter's Hat |A:Professions-ChatIcon-Quality-Tier3:17:15::1|a]|h|r",
+["quality"] = 3,
+},
+{
+["item_level"] = 105,
+["stats"] = {
+["ITEM_MOD_CRAFTING_SPEED_SHORT"] = 47,
+["ITEM_MOD_RESOURCEFULNESS_SHORT"] = 31,
+},
+["name"] = "Burnt Rolling Pin",
+["slot"] = 26,
+["id"] = 222577,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:222577::::::::80:266::13:3:10827:10830:9632:3:28:2734:38:8:40:2260::::Player-3674-0B558585:|h[Burnt Rolling Pin |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 2,
+},
+{
+["item_level"] = 83,
+["stats"] = {
+["ITEM_MOD_CRAFTING_SPEED_SHORT"] = 29,
+["ITEM_MOD_MULTICRAFT_SHORT"] = 19,
+},
+["name"] = "Weavercloth Chef's Hat",
+["slot"] = 27,
+["id"] = 222846,
+["gems"] = {
+},
+["item_link"] = "|cnIQ2:|Hitem:222846::::::::80:266::13:3:10827:10830:13628:3:28:2734:38:8:40:2381::::Player-3674-0B0D0D08:|h[Weavercloth Chef's Hat |A:Professions-ChatIcon-Quality-Tier5:17:15::1|a]|h|r",
+["quality"] = 2,
+},
+{
+["id"] = -1,
+["ilvl_overall"] = 92.25,
+["name"] = "average_ilvl_summary",
+["ilvl_equipped"] = 92.25,
+},
+},
+},
+},
 ["Player-3674-0BB3F0D1"] = {
 ["equipment"] = {
 ["updated_at"] = 1778448408,
@@ -224,7 +596,7 @@ AzerothDataCollector_EquipmentDB = {
 },
 ["Player-3674-09C5872B"] = {
 ["equipment"] = {
-["updated_at"] = 1778449753,
+["updated_at"] = 1778492050,
 ["records"] = {
 {
 ["slot"] = 1,
@@ -251,12 +623,16 @@ AzerothDataCollector_EquipmentDB = {
 ["item_link"] = "|cnIQ1:|Hitem:260855::::::::88:577::11:2:13573:6652:2:9:87:28:3084:::::|h[]|h|r",
 },
 {
+["stats"] = {
+},
 ["slot"] = 4,
 ["id"] = 6795,
 ["gems"] = {
 },
-["name"] = "?",
-["item_link"] = "|cnIQ1:|Hitem:6795::::::::88:577::::1:28:1418::::Player-3674-09EBCBEF:|h[]|h|r",
+["name"] = "White Swashbuckler's Shirt",
+["item_level"] = 1,
+["item_link"] = "|cnIQ2:|Hitem:6795::::::::88:577::::1:28:1418::::Player-3674-09EBCBEF:|h[White Swashbuckler's Shirt]|h|r",
+["quality"] = 2,
 },
 {
 ["slot"] = 5,
@@ -275,12 +651,21 @@ AzerothDataCollector_EquipmentDB = {
 ["item_link"] = "|cnIQ1:|Hitem:260841::::::::88:577::11:2:13573:6652:2:9:86:28:3084:::::|h[]|h|r",
 },
 {
+["stats"] = {
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 36,
+["ITEM_MOD_STAMINA_SHORT"] = 459,
+["ITEM_MOD_AGILITY_SHORT"] = 39,
+["ITEM_MOD_VERSATILITY"] = 33,
+["RESISTANCE0_NAME"] = 47,
+},
 ["slot"] = 7,
 ["id"] = 260845,
 ["gems"] = {
 },
-["name"] = "?",
-["item_link"] = "|cnIQ1:|Hitem:260845::::::::88:577::11:2:13573:6652:2:9:86:28:3084:::::|h[]|h|r",
+["name"] = "Greaves of Infinite Gravity",
+["item_level"] = 165,
+["item_link"] = "|cnIQ2:|Hitem:260845::::::::88:577::11:2:13573:6652:2:9:86:28:3084:::::|h[Greaves of Infinite Gravity]|h|r",
+["quality"] = 2,
 },
 {
 ["slot"] = 8,
@@ -291,12 +676,21 @@ AzerothDataCollector_EquipmentDB = {
 ["item_link"] = "|cnIQ1:|Hitem:256214::::::::88:577::11:2:13613:6652:2:9:87:28:3084:::::|h[]|h|r",
 },
 {
+["stats"] = {
+["ITEM_MOD_HASTE_RATING_SHORT"] = 23,
+["ITEM_MOD_CRIT_RATING_SHORT"] = 18,
+["ITEM_MOD_STAMINA_SHORT"] = 294,
+["ITEM_MOD_AGILITY_SHORT"] = 24,
+["RESISTANCE0_NAME"] = 30,
+},
 ["slot"] = 9,
 ["id"] = 260861,
 ["gems"] = {
 },
-["name"] = "?",
-["item_link"] = "|cnIQ1:|Hitem:260861::::::::88:577::11:2:13573:6652:2:9:87:28:3084:::::|h[]|h|r",
+["name"] = "Bracelets of Infinite Gravity",
+["item_level"] = 174,
+["item_link"] = "|cnIQ2:|Hitem:260861::::::::88:577::11:2:13573:6652:2:9:87:28:3084:::::|h[Bracelets of Infinite Gravity]|h|r",
+["quality"] = 2,
 },
 {
 ["slot"] = 10,
@@ -315,12 +709,20 @@ AzerothDataCollector_EquipmentDB = {
 ["item_link"] = "|cnIQ1:|Hitem:251115::::::::88:577::17:3:13441:13436:13668:2:9:86:28:3084:::::|h[]|h|r",
 },
 {
+["stats"] = {
+["EMPTY_SOCKET_PRISMATIC"] = 1,
+["ITEM_MOD_HASTE_RATING_SHORT"] = 88,
+["ITEM_MOD_MASTERY_RATING_SHORT"] = 62,
+["ITEM_MOD_STAMINA_SHORT"] = 308,
+},
 ["slot"] = 12,
 ["id"] = 251093,
 ["gems"] = {
 },
-["name"] = "?",
-["item_link"] = "|cnIQ1:|Hitem:251093::::::::88:577::17:3:13441:13436:13668:2:9:87:28:3084:::::|h[]|h|r",
+["name"] = "Omission of Light",
+["item_level"] = 180,
+["item_link"] = "|cnIQ3:|Hitem:251093::::::::88:577::17:3:13441:13436:13668:2:9:87:28:3084:::::|h[Omission of Light]|h|r",
+["quality"] = 3,
 },
 {
 ["slot"] = 13,
@@ -371,12 +773,16 @@ AzerothDataCollector_EquipmentDB = {
 ["item_link"] = "|cnIQ1:|Hitem:224114::::::::88:577::13:3:10827:10830:9628:4:28:2734:29:76:38:4:40:1619::::Player-3674-09C5872B:|h[ |A:Professions-ChatIcon-Quality-Tier1:17:15::1|a]|h|r",
 },
 {
+["stats"] = {
+},
 ["slot"] = 28,
 ["id"] = 180136,
 ["gems"] = {
 },
-["name"] = "?",
-["item_link"] = "|cnIQ1:|Hitem:180136::::::::88:577::14::1:28:783:::::|h[]|h|r",
+["name"] = "\"The Brokers Angle'r\"",
+["item_level"] = 15,
+["item_link"] = "|cnIQ3:|Hitem:180136::::::::88:577::14::1:28:783:::::|h[\"The Brokers Angle'r\"]|h|r",
+["quality"] = 3,
 },
 {
 ["id"] = -1,
@@ -391,5 +797,5 @@ AzerothDataCollector_EquipmentDB = {
 },
 ["schema_version"] = 4,
 ["addon_folder"] = "AzerothDataCollector_Equipment",
-["last_saved_at"] = 1778449753,
+["last_saved_at"] = 1778492050,
 }

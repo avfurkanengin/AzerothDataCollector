@@ -2,6 +2,33 @@
 AzerothDataCollector_MetaDB = {
 ["module_key"] = "meta",
 ["by_character"] = {
+["Player-3674-09D241D0"] = {
+["meta"] = {
+["guid"] = "Player-3674-09D241D0",
+["subzone"] = "",
+["class"] = "WARLOCK",
+["race"] = "Blood Elf",
+["level"] = 80,
+["class_localized"] = "Warlock",
+["realm"] = "Twisting Nether",
+["ilvl_overall"] = 0,
+["race_id"] = 10,
+["spec_index"] = 2,
+["updated_at"] = 1778492012,
+["name"] = "Feldr",
+["server_time"] = "2026-05-11 12:33:32",
+["faction"] = "Horde",
+["gender_id"] = 3,
+["zone"] = "Dornogal",
+["spec_id"] = 0,
+["ilvl_equipped"] = 0,
+},
+["wallet"] = {
+["updated_at"] = 1778492012,
+["copper"] = 0,
+["partial"] = false,
+},
+},
 ["Player-3674-0BB3F0D1"] = {
 ["meta"] = {
 ["guid"] = "Player-3674-0BB3F0D1",
@@ -32,7 +59,7 @@ AzerothDataCollector_MetaDB = {
 ["Player-3674-09C5872B"] = {
 ["meta"] = {
 ["guid"] = "Player-3674-09C5872B",
-["subzone"] = "Murder Row",
+["subzone"] = "The Bazaar",
 ["class"] = "DEMONHUNTER",
 ["race"] = "Blood Elf",
 ["level"] = 88,
@@ -41,8 +68,8 @@ AzerothDataCollector_MetaDB = {
 ["ilvl_overall"] = 0,
 ["race_id"] = 10,
 ["spec_index"] = 1,
-["server_time"] = "2026-05-11 01:03:22",
-["updated_at"] = 1778450602,
+["server_time"] = "2026-05-11 12:36:08",
+["updated_at"] = 1778492168,
 ["name"] = "Auvendil",
 ["faction"] = "Horde",
 ["gender_id"] = 2,
@@ -51,9 +78,9 @@ AzerothDataCollector_MetaDB = {
 ["ilvl_equipped"] = 0,
 },
 ["wallet"] = {
-["partial"] = false,
+["updated_at"] = 1778492168,
 ["copper"] = 0,
-["updated_at"] = 1778450602,
+["partial"] = false,
 },
 },
 },

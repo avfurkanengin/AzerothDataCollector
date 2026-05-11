@@ -2,6 +2,42 @@
 AzerothDataCollector_ProfessionsDB = {
 ["module_key"] = "professions",
 ["by_character"] = {
+["Player-3674-09D241D0"] = {
+["professions"] = {
+["updated_at"] = 1778492006,
+["partial"] = false,
+["records"] = {
+{
+["id"] = -5,
+["name"] = "_profession_header_note",
+},
+{
+["name"] = "Tailoring",
+["skill_rank"] = 100,
+["id"] = 197,
+["slot_index"] = "major_1",
+["skill_max"] = 100,
+["texture"] = 4620681,
+},
+{
+["name"] = "Enchanting",
+["skill_rank"] = 105,
+["id"] = 333,
+["slot_index"] = "major_2",
+["skill_max"] = 105,
+["texture"] = 4620672,
+},
+{
+["name"] = "Archaeology",
+["skill_rank"] = 1,
+["id"] = 794,
+["slot_index"] = "archaeology",
+["skill_max"] = 800,
+["texture"] = 441139,
+},
+},
+},
+},
 ["Player-3674-0BB3F0D1"] = {
 ["professions"] = {
 ["updated_at"] = 1778448408,
@@ -16,7 +52,7 @@ AzerothDataCollector_ProfessionsDB = {
 },
 ["Player-3674-09C5872B"] = {
 ["professions"] = {
-["updated_at"] = 1778449753,
+["updated_at"] = 1778492050,
 ["records"] = {
 {
 ["id"] = -5,
@@ -69,5 +105,5 @@ AzerothDataCollector_ProfessionsDB = {
 },
 ["schema_version"] = 4,
 ["addon_folder"] = "AzerothDataCollector_Professions",
-["last_saved_at"] = 1778449753,
+["last_saved_at"] = 1778492050,
 }
