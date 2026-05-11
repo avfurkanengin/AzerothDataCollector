@@ -4,30 +4,22 @@ AzerothDataCollector_AgendaDB = {
 ["by_character"] = {
 ["Player-3674-09D241D0"] = {
 ["agenda"] = {
-["updated_at"] = 1778492006,
-["partial"] = false,
+["updated_at"] = 1778494569,
 ["records"] = {
 },
-},
-},
-["Player-3674-0BB3F0D1"] = {
-["agenda"] = {
-["updated_at"] = 1778448408,
 ["partial"] = false,
-["records"] = {
-},
 },
 },
 ["Player-3674-09C5872B"] = {
 ["agenda"] = {
-["updated_at"] = 1778492050,
+["updated_at"] = 1778494534,
+["partial"] = false,
 ["records"] = {
 },
-["partial"] = false,
 },
 },
 },
-["schema_version"] = 4,
+["schema_version"] = 5,
 ["addon_folder"] = "AzerothDataCollector_Agenda",
-["last_saved_at"] = 1778492050,
+["last_saved_at"] = 1778494569,
 }

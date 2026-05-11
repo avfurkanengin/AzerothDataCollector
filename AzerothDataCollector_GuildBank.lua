@@ -4,9 +4,7 @@ AzerothDataCollector_GuildBankDB = {
 ["by_character"] = {
 ["Player-3674-09D241D0"] = {
 ["guild_bank"] = {
-["updated_at"] = 1778492006,
-["partial"] = true,
-["partial_reason"] = "guild_bank_frame_not_open",
+["updated_at"] = 1778494569,
 ["records"] = {
 {
 ["frame_open"] = false,
@@ -16,28 +14,21 @@ AzerothDataCollector_GuildBankDB = {
 ["num_tabs"] = 7,
 },
 },
-},
-},
-["Player-3674-0BB3F0D1"] = {
-["guild_bank"] = {
-["updated_at"] = 1778448408,
+["partial_reason"] = "guild_bank_frame_not_open",
 ["partial"] = true,
-["partial_reason"] = "player_not_in_guild",
-["records"] = {
-},
 },
 },
 ["Player-3674-09C5872B"] = {
 ["guild_bank"] = {
-["updated_at"] = 1778492050,
+["updated_at"] = 1778494534,
+["partial"] = true,
+["partial_reason"] = "player_not_in_guild",
 ["records"] = {
 },
-["partial_reason"] = "player_not_in_guild",
-["partial"] = true,
 },
 },
 },
-["schema_version"] = 4,
+["schema_version"] = 5,
 ["addon_folder"] = "AzerothDataCollector_GuildBank",
-["last_saved_at"] = 1778492050,
+["last_saved_at"] = 1778494569,
 }
